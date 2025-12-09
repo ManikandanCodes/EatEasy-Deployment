@@ -1,0 +1,246 @@
+<div class="restaurant-management">
+
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">Restaurant Management</h1>
+      <p class="page-subtitle">Manage and approve restaurant listings</p>
+    </div>
+    <div class="header-actions">
+      <div class="stats-summary">
+        <div class="summary-item">
+          <span class="summary-label">Total:</span>
+          <span class="summary-value">{{ restaurants.length }}</span>
+        </div>
+        <div class="summary-item pending">
+          <span class="summary-label">Pending:</span>
+          <span class="summary-value">{{ getPendingCount() }}</span>
+        </div>
+        <div class="summary-item approved">
+          <span class="summary-label">Approved:</span>
+          <span class="summary-value">{{ getApprovedCount() }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="toolbar">
+    <div class="search-box">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
+      <input type="text" placeholder="Search restaurants..." [value]="searchTerm"
+        (input)="searchTerm = $any($event.target).value; filterRestaurants()">
+    </div>
+
+    <div class="filter-group">
+      <button class="filter-btn" [class.active]="filterStatus === 'ALL'" (click)="setFilter('ALL')">All</button>
+      <button class="filter-btn pending" [class.active]="filterStatus === 'PENDING'"
+        (click)="setFilter('PENDING')">Pending</button>
+      <button class="filter-btn approved" [class.active]="filterStatus === 'APPROVED'"
+        (click)="setFilter('APPROVED')">Approved</button>
+      <button class="filter-btn blocked" [class.active]="filterStatus === 'REJECTED'"
+        (click)="setFilter('REJECTED')">Blocked</button>
+    </div>
+  </div>
+
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading restaurants...</p>
+  </div>
+
+
+  <div *ngIf="!loading && filteredRestaurants.length === 0" class="empty-state">
+    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+    </svg>
+    <h3>No Restaurants Found</h3>
+    <p>There are no restaurants matching your criteria.</p>
+  </div>
+
+
+  <div *ngIf="!loading && filteredRestaurants.length > 0" class="restaurant-grid">
+    <div *ngFor="let restaurant of filteredRestaurants" class="restaurant-card">
+
+      <div class="status-badge" [ngClass]="restaurant.status.toLowerCase()">
+        {{ restaurant.status }}
+      </div>
+
+
+      <div class="card-header">
+        <div class="restaurant-avatar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          </svg>
+        </div>
+        <div class="restaurant-info">
+          <h3 class="restaurant-name">{{ restaurant.name }}</h3>
+          <p class="restaurant-id">ID: #{{ restaurant.id }}</p>
+        </div>
+      </div>
+
+
+      <div class="card-body">
+        <div class="detail-row">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+          </svg>
+          <span>{{ restaurant.email }}</span>
+        </div>
+
+        <div class="detail-row">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path
+              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+            </path>
+          </svg>
+          <span>{{ restaurant.phone || 'N/A' }}</span>
+        </div>
+
+        <div class="detail-row" *ngIf="restaurant.address">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <span>{{ restaurant.address }}</span>
+        </div>
+      </div>
+
+      
+      <div class="card-actions">
+ 
+        <button *ngIf="restaurant.status === 'PENDING'" class="action-btn approve"
+          (click)="approveRestaurant(restaurant.id)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          Approve
+        </button>
+
+        <button *ngIf="restaurant.status === 'PENDING'" class="action-btn reject"
+          (click)="blockRestaurant(restaurant.id)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+          Reject
+        </button>
+
+   
+        <button *ngIf="restaurant.status === 'APPROVED'" class="action-btn block"
+          (click)="blockRestaurant(restaurant.id)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="m4.9 4.9 14.2 14.2"></path>
+          </svg>
+          Block
+        </button>
+
+      
+        <button *ngIf="restaurant.status === 'REJECTED'" class="action-btn activate"
+          (click)="activateRestaurant(restaurant.id)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+          </svg>
+          Activate
+        </button>
+
+
+        <button class="action-btn details" (click)="viewDetails(restaurant)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 16v-4"></path>
+            <path d="M12 8h.01"></path>
+          </svg>
+          Details
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-overlay" *ngIf="selectedRestaurant" (click)="closeDetails()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Restaurant Details</h2>
+      <button class="close-btn" (click)="closeDetails()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="detail-section">
+        <h3>Basic Information</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Name</span>
+            <span class="value">{{ selectedRestaurant.name }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">ID</span>
+            <span class="value">#{{ selectedRestaurant.id }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Status</span>
+            <span class="status-badge" [ngClass]="selectedRestaurant.status.toLowerCase()">
+              {{ selectedRestaurant.status }}
+            </span>
+          </div>
+          <div class="info-item">
+            <span class="label">Rating</span>
+            <span class="value">⭐ {{ selectedRestaurant.rating || 'N/A' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h3>Contact & Location</h3>
+        <div class="info-grid">
+          <div class="info-item full-width">
+            <span class="label">Email</span>
+            <span class="value">{{ selectedRestaurant.email || 'N/A' }}</span>
+          </div>
+          <div class="info-item full-width">
+            <span class="label">Phone</span>
+            <span class="value">{{ selectedRestaurant.phone || 'N/A' }}</span>
+          </div>
+          <div class="info-item full-width">
+            <span class="label">Address</span>
+            <span class="value">{{ selectedRestaurant.address || 'N/A' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h3>Additional Info</h3>
+        <div class="info-grid">
+          <div class="info-item full-width">
+            <span class="label">Cuisines</span>
+            <span class="value">{{ selectedRestaurant.cuisines || 'N/A' }}</span>
+          </div>
+          <div class="info-item full-width">
+            <span class="label">Opening Hours</span>
+            <span class="value">{{ selectedRestaurant.openingHours || 'N/A' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="action-btn close" (click)="closeDetails()">Close</button>
+    </div>
+  </div>
+</div>

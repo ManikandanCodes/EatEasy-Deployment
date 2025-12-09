@@ -1,0 +1,85 @@
+<div *ngIf="loading" class="loading">
+  <div class="spinner"></div>
+  <p>Loading restaurant details...</p>
+</div>
+
+<div *ngIf="!loading && restaurant">
+
+  <div class="banner">
+    <div class="banner-content">
+      <h2>{{ restaurant.name }}</h2>
+
+      <div class="banner-meta">
+        <div class="rating">
+          <span>⭐</span>
+          <span>{{ restaurant.rating || 'New' }}</span>
+        </div>
+        <span class="cuisine">{{ restaurant.cuisines }}</span>
+        <span class="opening-hours" *ngIf="restaurant.openingHours">
+          🕒 {{ restaurant.openingHours }}
+        </span>
+        <span class="status-badge closed" *ngIf="!restaurant.available">CLOSED</span>
+        <span class="status-badge open" *ngIf="restaurant.available">OPEN</span>
+      </div>
+
+      <div class="address">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+        <span>{{ restaurant.address }}</span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="menu-section">
+    <h3 class="menu-title">Menu</h3>
+
+
+    <div *ngIf="menu.length === 0" class="empty-menu">
+      <p>No menu items available yet.</p>
+    </div>
+
+    <div class="menu-grid">
+      <div *ngFor="let item of menu" class="menu-item">
+
+   
+        <div class="item-image" *ngIf="item.imageUrl">
+          <img [src]="item.imageUrl" alt="{{ item.name }}" onerror="this.style.display='none'">
+        </div>
+
+        <div class="item-content">
+          <div class="item-header">
+            <h4 class="item-name">{{ item.name }}</h4>
+            <span class="item-price">₹{{ item.price }}</span>
+          </div>
+          <p class="item-desc">{{ item.description }}</p>
+        </div>
+
+  
+        <div class="actions" [class.disabled]="!restaurant.available">
+
+          <div *ngIf="!restaurant.available" class="closed-msg">
+            Currently Unavailable
+          </div>
+
+          <ng-container *ngIf="restaurant.available">
+      
+            <button *ngIf="!cart[item.id]" class="add-btn" (click)="addToCart(item)">
+              Add to Cart
+            </button>
+
+           
+            <div *ngIf="cart[item.id]" class="counter">
+              <button (click)="decrease(item)">−</button>
+              <span>{{ cart[item.id] }}</span>
+              <button (click)="increase(item)">+</button>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+  </div>

@@ -1,0 +1,45 @@
+<div class="container section">
+  <h2 class="section-title">Nearby Restaurants</h2>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Finding the best food for you...</p>
+  </div>
+
+  <div *ngIf="!loading && restaurants.length === 0" class="empty-state">
+    <p>No restaurants found matching your criteria.</p>
+  </div>
+
+  <div class="restaurant-grid" *ngIf="!loading && restaurants.length > 0">
+    <div *ngFor="let r of restaurants" class="restaurant-card" (click)="viewRestaurant(r.id)">
+      <div class="card-image">
+        <img
+          [src]="(r.imageUrl && r.imageUrl.startsWith('http')) ? r.imageUrl : 'https://placehold.co/400x250?text=Restaurant'"
+          [alt]="r.name">
+        <div class="rating-badge">
+          ⭐ {{ r.rating || 'New' }}
+        </div>
+        <div class="closed-overlay" *ngIf="!r.available">
+          <span class="closed-badge">CLOSED</span>
+        </div>
+      </div>
+
+      <div class="card-content">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="card-title">{{ r.name }}</h3>
+        </div>
+
+        <p class="cuisine-text">{{ r.cuisine }}</p>
+
+        <div class="card-footer">
+          <span class="delivery-time">
+            <i class="icon-clock"></i> {{ r.openingHours || (r.deliveryTime || '30-40') + ' mins' }}
+          </span>
+          <span class="delivery-fee">
+            {{ r.deliveryFee ? ('₹' + r.deliveryFee) : 'Free Delivery' }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

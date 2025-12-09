@@ -1,0 +1,231 @@
+<div class="admin-dashboard">
+
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1 class="dashboard-title">Admin Dashboard</h1>
+      <p class="dashboard-subtitle">Welcome back! Here's what's happening with your platform today.</p>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading dashboard statistics...</p>
+  </div>
+
+
+  <div *ngIf="!loading && stats" class="dashboard-content">
+
+    <div class="stats-grid">
+      <div class="stat-card primary">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-label">Total Users</h3>
+          <p class="stat-value">{{ stats.totalUsers || 0 }}</p>
+          <span class="stat-trend positive">+12% from last month</span>
+        </div>
+      </div>
+
+      <div class="stat-card success">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-label">Total Restaurants</h3>
+          <p class="stat-value">{{ stats.totalRestaurants || 0 }}</p>
+          <span class="stat-trend positive">+8% from last month</span>
+        </div>
+      </div>
+
+      <div class="stat-card warning">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-label">Pending Approvals</h3>
+          <p class="stat-value">{{ stats.pendingRestaurants || 0 }}</p>
+          <span class="stat-trend neutral">Requires attention</span>
+        </div>
+      </div>
+
+      <div class="stat-card info">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-label">Total Orders</h3>
+          <p class="stat-value">{{ stats.totalOrders || 0 }}</p>
+          <span class="stat-trend positive">+24% from last month</span>
+        </div>
+      </div>
+
+      <div class="stat-card accent">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-label">Today's Orders</h3>
+          <p class="stat-value">{{ stats.todayOrders || 0 }}</p>
+          <span class="stat-trend positive">Active today</span>
+        </div>
+      </div>
+
+      <div class="stat-card revenue">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-label">Today's Revenue</h3>
+          <p class="stat-value">₹ {{ stats.todayRevenue || 0 }}</p>
+          <span class="stat-trend positive">+18% from yesterday</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="quick-actions-section">
+      <h2 class="section-title">Quick Actions</h2>
+      <div class="actions-grid">
+        <a routerLink="/admin/restaurants" class="action-card">
+          <div class="action-icon purple">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            </svg>
+          </div>
+          <h3>Manage Restaurants</h3>
+          <p>Approve, block, or manage restaurant listings</p>
+        </a>
+
+        <a routerLink="/admin/users" class="action-card">
+          <div class="action-icon blue">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <h3>User Management</h3>
+          <p>View and manage all platform users</p>
+        </a>
+
+        <a routerLink="/admin/analytics" class="action-card">
+          <div class="action-icon green">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+          </div>
+          <h3>View Analytics</h3>
+          <p>Detailed insights and system analytics</p>
+        </a>
+
+        <a routerLink="/admin/coupons" class="action-card">
+          <div class="action-icon orange">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path
+                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+              </path>
+              <polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline>
+              <polyline points="7.5 19.79 7.5 14.6 3 12"></polyline>
+              <polyline points="21 12 16.5 14.6 16.5 19.79"></polyline>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+              <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+          </div>
+          <h3>Manage Coupons</h3>
+          <p>Create and manage discount coupons</p>
+        </a>
+      </div>
+    </div>
+
+    
+    <div class="recent-activity-section">
+      <h2 class="section-title">Recent Activity</h2>
+      <div class="activity-list">
+        <div class="activity-item">
+          <div class="activity-icon new">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            </svg>
+          </div>
+          <div class="activity-content">
+            <p class="activity-title">New restaurant registration</p>
+            <p class="activity-time">2 minutes ago</p>
+          </div>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-icon approved">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="activity-content">
+            <p class="activity-title">Restaurant "Spice Garden" approved</p>
+            <p class="activity-time">15 minutes ago</p>
+          </div>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-icon user">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <div class="activity-content">
+            <p class="activity-title">New user registration</p>
+            <p class="activity-time">1 hour ago</p>
+          </div>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-icon order">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+          </div>
+          <div class="activity-content">
+            <p class="activity-title">50+ orders completed today</p>
+            <p class="activity-time">2 hours ago</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

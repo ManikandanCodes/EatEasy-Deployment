@@ -1,0 +1,138 @@
+<div class="coupon-management">
+  <div class="page-header">
+    <h2>Coupon Management</h2>
+    <p class="page-subtitle">Create and manage discount coupons for your customers</p>
+  </div>
+
+  
+  <div class="form-card">
+    <h3>Add New Coupon</h3>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Coupon Code</label>
+        <input type="text" [(ngModel)]="code" placeholder="e.g., SAVE20">
+      </div>
+
+      <div class="form-group">
+        <label>Discount Value</label>
+        <input type="number" [(ngModel)]="discount" placeholder="e.g., 20">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Discount Type</label>
+        <select [(ngModel)]="type">
+          <option value="PERCENTAGE">Percentage (%)</option>
+          <option value="FLAT">Flat Amount (₹)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Expiry Date</label>
+        <input type="date" [(ngModel)]="expiry">
+      </div>
+    </div>
+
+    <button (click)="addCoupon()">Add Coupon</button>
+  </div>
+
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading coupons...</p>
+  </div>
+
+
+  <div *ngIf="!loading && coupons.length === 0" class="table-container">
+    <div class="empty-state">
+      <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2">
+        <path d="M21 8.5v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7"></path>
+        <path d="M3 8.5V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.5"></path>
+        <path d="M12 12v5"></path>
+        <path d="M9.5 14.5 12 17l2.5-2.5"></path>
+      </svg>
+      <h3>No Coupons Yet</h3>
+      <p>Create your first coupon using the form above to get started!</p>
+    </div>
+  </div>
+
+
+  <div *ngIf="!loading && coupons.length > 0" class="table-container">
+    <div class="table-header">
+      <h3>
+        Active Coupons
+        <span class="coupon-count">{{ coupons.length }} Total</span>
+      </h3>
+    </div>
+
+
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Coupon Code</th>
+            <th>Discount</th>
+            <th>Type</th>
+            <th>Expiry Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let c of coupons">
+            <td>
+              <span class="coupon-code">{{ c.code }}</span>
+            </td>
+            <td>
+              <span class="discount-value">{{ c.discount }}{{ c.type === 'PERCENTAGE' ? '%' : '₹' }}</span>
+            </td>
+            <td>
+              <span class="type-badge" [ngClass]="c.type.toLowerCase()">
+                {{ c.type === 'PERCENTAGE' ? 'Percentage' : 'Flat Amount' }}
+              </span>
+            </td>
+            <td>
+              <span class="expiry-date" [class.expired]="isExpired(c.expiryDate)">
+                {{ formatDate(c.expiryDate) }}
+              </span>
+            </td>
+            <td>
+              <button class="delete-btn" (click)="deleteCoupon(c.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    
+    <div class="coupon-cards">
+      <div class="coupon-card" *ngFor="let c of coupons">
+        <div class="coupon-card-header">
+          <span class="coupon-code">{{ c.code }}</span>
+          <span class="discount-value">{{ c.discount }}{{ c.type === 'PERCENTAGE' ? '%' : '₹' }}</span>
+        </div>
+
+        <div class="coupon-card-row">
+          <span class="coupon-card-label">Type</span>
+          <span class="type-badge" [ngClass]="c.type.toLowerCase()">
+            {{ c.type === 'PERCENTAGE' ? 'Percentage' : 'Flat Amount' }}
+          </span>
+        </div>
+
+        <div class="coupon-card-row">
+          <span class="coupon-card-label">Expiry Date</span>
+          <span class="expiry-date" [class.expired]="isExpired(c.expiryDate)">
+            {{ formatDate(c.expiryDate) }}
+          </span>
+        </div>
+
+        <div class="coupon-card-row">
+          <button class="delete-btn" (click)="deleteCoupon(c.id)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

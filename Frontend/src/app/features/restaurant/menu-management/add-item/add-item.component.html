@@ -1,0 +1,27 @@
+<h2>Add Menu Item</h2>
+
+<p *ngIf="error" class="error">{{ error }}</p>
+
+<label>Item Name</label>
+<input type="text" [(ngModel)]="name">
+
+<label>Price</label>
+<input type="number" [(ngModel)]="price">
+
+<label>Description</label>
+<textarea [(ngModel)]="description"></textarea>
+
+<label>Image URL</label>
+<input type="url" [(ngModel)]="imageUrl" placeholder="https://example.com/food.jpg">
+
+<label>Select Category</label>
+<select [(ngModel)]="categoryId">
+  <option [value]="null">-- Select Category --</option>
+  <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+</select>
+
+<label class="check">
+  <input type="checkbox" [(ngModel)]="isVeg"> Veg Item
+</label>
+
+<button (click)="addItem()">Add Item</button>

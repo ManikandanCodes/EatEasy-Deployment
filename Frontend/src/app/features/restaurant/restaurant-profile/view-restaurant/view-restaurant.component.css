@@ -1,0 +1,149 @@
+.profile-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: #fff;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: #ccc;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-left-color: #ff6b6b;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 3rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header-content h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2.5rem;
+  background: linear-gradient(45deg, #fff, #ccc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.status-badge.open {
+  background: rgba(46, 213, 115, 0.2);
+  color: #2ed573;
+  border: 1px solid rgba(46, 213, 115, 0.3);
+}
+
+.status-badge.closed {
+  background: rgba(255, 71, 87, 0.2);
+  color: #ff4757;
+  border: 1px solid rgba(255, 71, 87, 0.3);
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn.primary {
+  background: #ff6b6b;
+  color: white;
+}
+
+.btn.primary:hover {
+  background: #ff5252;
+  transform: translateY(-2px);
+}
+
+.btn.secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.profile-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.detail-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.detail-card h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #ddd;
+  font-size: 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.detail-row:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.label {
+  color: #aaa;
+  font-size: 0.95rem;
+}
+
+.value {
+  font-weight: 500;
+  color: #fff;
+}

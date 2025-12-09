@@ -1,0 +1,8 @@
+<h2>Add Category</h2>
+
+<p *ngIf="error" class="error">{{ error }}</p>
+
+<label>Category Name</label>
+<input type="text" [(ngModel)]="name">
+
+<button (click)="save()">Save</button>

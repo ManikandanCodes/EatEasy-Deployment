@@ -1,0 +1,241 @@
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.restaurant-info {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border-radius: 16px;
+    padding: 2.5rem;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.info-content {
+    flex: 1;
+}
+
+.restaurant-image {
+    flex: 0 0 300px;
+    height: 200px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border: 4px solid rgba(255, 255, 255, 0.2);
+}
+
+.restaurant-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.restaurant-name {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.restaurant-address {
+    font-size: 1.1rem;
+    color: white;
+    opacity: 0.95;
+    margin-bottom: 0.5rem;
+}
+
+.restaurant-cuisine {
+    font-size: 1rem;
+    color: white;
+    opacity: 0.9;
+    margin-bottom: 1rem;
+}
+
+.restaurant-status {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    display: inline-block;
+    color: white;
+}
+
+.restaurant-status b {
+    color: #4ade80;
+    font-weight: 600;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.btn {
+    background: rgba(255, 255, 255, 0.95);
+    color: #3b82f6;
+    border: none;
+    padding: 0.875rem 1.75rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    background: white;
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+
+.stats-section {
+    margin-top: 2rem;
+}
+
+.stats-section h3 {
+    font-size: 1.8rem;
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border-left: 4px solid;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.stat-card.orders {
+    border-left-color: #3b82f6;
+}
+
+.stat-card.revenue {
+    border-left-color: #10b981;
+}
+
+.stat-card.items {
+    border-left-color: #f59e0b;
+}
+
+.stat-card.rating {
+    border-left-color: #8b5cf6;
+}
+
+.stat-card h4 {
+    font-size: 0.875rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card p {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    font-size: 1.2rem;
+    color: #6b7280;
+}
+
+.loading::after {
+    content: '';
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+    border: 3px solid #e5e7eb;
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.error {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    border-left: 4px solid #dc2626;
+}
+
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 1rem;
+    }
+
+    .restaurant-info {
+        padding: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .restaurant-image {
+        width: 100%;
+        height: 200px;
+        flex: none;
+        margin-top: 1rem;
+    }
+
+    .restaurant-name {
+        font-size: 1.8rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}

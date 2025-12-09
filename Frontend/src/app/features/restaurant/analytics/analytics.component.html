@@ -1,0 +1,40 @@
+<div class="analytics-container">
+  <h2>📊 Restaurant Analytics</h2>
+
+  <div *ngIf="loading" class="loading">
+    Loading analytics...
+  </div>
+
+  <div *ngIf="!loading && !stats" class="no-data">
+    <p>No analytics data available.</p>
+  </div>
+
+  <div *ngIf="!loading && stats" class="grid">
+
+    <div class="card">
+      <h3>Total Orders</h3>
+      <p>{{ stats.totalOrders || 0 }}</p>
+    </div>
+
+    <div class="card">
+      <h3>Accepted Orders</h3>
+      <p>{{ stats.acceptedOrders || 0 }}</p>
+    </div>
+
+    <div class="card">
+      <h3>Rejected Orders</h3>
+      <p>{{ stats.rejectedOrders || 0 }}</p>
+    </div>
+
+    <div class="card">
+      <h3>Completed Orders</h3>
+      <p>{{ stats.completedOrders || 0 }}</p>
+    </div>
+
+    <div class="card revenue">
+      <h3>Total Revenue</h3>
+      <p>₹{{ stats.totalRevenue?.toFixed(2) || '0.00' }}</p>
+    </div>
+
+  </div>
+</div>

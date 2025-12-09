@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EatEasy Project Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #fff;
+            text-align: justify;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: #2c3e50;
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            color: #1a73e8;
+            margin-top: 2.5em;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: #555;
+            margin-top: 1.8em;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        h4 {
+            font-size: 1.1em;
+            font-weight: 700;
+            margin-bottom: 0.5em;
+        }
+
+        p {
+            margin-bottom: 1em;
+        }
+
+        ul,
+        ol {
+            margin-bottom: 1em;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            margin: 15px 0;
+            white-space: pre-wrap;
+            /* Wrap long lines */
+            word-wrap: break-word;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f1f3f5;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .mermaid {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            margin-bottom: 40px;
+        }
+
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .toc li {
+            margin-bottom: 8px;
+            border-bottom: 1px dotted #ccc;
+        }
+
+        .toc a {
+            display: block;
+            padding: 2px 0;
+            color: #333;
+        }
+
+        .toc a:hover {
+            color: #007bff;
+        }
+
+        /* Print Specific Styles */
+        @media print {
+            body {
+                padding: 0;
+                margin: 1.5cm;
+                color: #000;
+                max-width: 100%;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            a {
+                text-decoration: none;
+                color: #000;
+            }
+
+            /* Avoid breaks inside elements if possible, but allow if necessary to avoid huge gaps */
+            pre,
+            blockquote {
+                page-break-inside: auto;
+            }
+
+            table {
+                page-break-inside: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            /* Ensure headers stick to content */
+            h1,
+            h2,
+            h3,
+            h4 {
+                page-break-after: avoid;
+                page-break-inside: avoid;
+            }
+
+            /* Start H2 on a new page only if it pushes content too far down, 
+               but here we remove 'always' to prevent forced gaps. 
+               We rely on natural flow. */
+            h2 {
+                page-break-before: auto;
+                margin-top: 2em;
+            }
+
+            /* Remove the forced section breaks */
+            .section-break {
+                display: none;
+            }
+
+            /* Force Introduction to start on a new page */
+            #introduction {
+                page-break-before: always;
+                break-before: page;
+                display: block;
+                margin-top: 2em;
+                /* Give it some space on the new page */
+            }
+
+            /* Prevent Diagram Splitting */
+            .mermaid,
+            .no-break {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                display: block;
+            }
+
+            .mermaid {
+                margin: 20px auto;
+            }
+
+            /* Better contrast for print */
+            code {
+                border: 1px solid #ccc;
+            }
+        }
+
+        .print-btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            text-align: center;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <a href="javascript:window.print()" class="print-btn no-print">Click to Save as PDF</a>
+
+    <h1>EatEasy - Detailed Project Report</h1>
+    <h3 style="text-align: center; margin-top: -20px; color: #555;">Developed by: MANIKANDAN A</h3>
+
+    <div class="toc">
+        <h2>Table of Contents</h2>
+        <ul>
+            <li><a href="#introduction">1. Introduction</a></li>
+            <li><a href="#architecture">2. System Architecture</a></li>
+            <li><a href="#frontend">3. Frontend Components (Angular)</a>
+                <ul>
+                    <li><a href="#frontend">3.2 Auth Module</a></li>
+                    <li><a href="#frontend">3.3 Admin Module</a></li>
+                    <li><a href="#frontend">3.4 Customer Module</a></li>
+                    <li><a href="#frontend">3.5 Restaurant Module</a></li>
+                </ul>
+            </li>
+            <li><a href="#backend">4. Backend Components (Spring Boot)</a></li>
+            <li><a href="#database">5. Database Configuration & Schema</a></li>
+            <li><a href="#credentials">6. User Credentials (Test Data)</a></li>
+            <li><a href="#future">7. Future Integrations</a></li>
+            <li><a href="#conclusion">8. Conclusion</a></li>
+        </ul>
+    </div>
+
+    <div class="section-break"></div>
+
+    <h2 id="introduction">1. Introduction</h2>
+    <p>
+        The food delivery industry has witnessed exponential growth in recent years, driven by the convenience of
+        ordering meals from the comfort of one's home. <strong>EatEasy</strong> is a robust, full-stack multi-vendor
+        food delivery application designed to address this demand by connecting hungry customers with local restaurants
+        through a seamless digital interface.
+    </p>
+    <p>
+        The primary objective of EatEasy is to provide a scalable and user-friendly platform that supports three
+        distinct user roles: <strong>Customers</strong>, who wish to discover and order food; <strong>Restaurant
+            Owners</strong>, who need tools to manage their menus and process orders; and
+        <strong>Administrators</strong>, who oversee the health and integrity of the entire platform.
+    </p>
+
+    <h3>1.1 Scope</h3>
+    <p>
+        The scope of this project encompasses the development of a responsive web application that includes real-time
+        order processing, secure authentication, dynamic menu management, and comprehensive analytics. It serves as a
+        complete solution for small to medium-scale food delivery operations.
+    </p>
+
+    <h3>1.2 Core Modules</h3>
+    <ul>
+        <li><strong>Customer Module</strong>: Empowering users to discover restaurants, filter by cuisine, view detailed
+            menus, manage a shopping cart, place secure orders, and track delivery status in real-time.</li>
+        <li><strong>Restaurant Owner Module</strong>: Providing owners with a comprehensive dashboard to manage
+            restaurant profiles, edit menus (items, prices, images), update operating hours, and process incoming orders
+            with status updates.</li>
+        <li><strong>Admin Module</strong>: Integrating high-level management tools to verify new restaurant
+            registrations, manage user accounts, oversee platform analytics, and ensure quality control across the
+            service.</li>
+    </ul>
+
+    <div class="section-break"></div>
+
+    <h2 id="architecture">2. System Architecture</h2>
+
+    <h3>2.1 Data Flow Diagram</h3>
+    <p>The diagram below represents the high-level data flow within the EatEasy application. It illustrates the complete
+        lifecycle of a user request, detailing how data traverses from the Angular frontend, through the secure Spring
+        Boot backend layers, to the MySQL database, and back to the client.</p>
+
+    <p><strong>Interaction Workflow:</strong></p>
+    <ol>
+        <li><strong>User Action</strong>: The workflow initiates when a user interacts with the UI (e.g., clicking
+            "Place Order").</li>
+        <li><strong>HTTP Request</strong>: The Angular frontend constructs an HTTP request including the JWT
+            authorization header.</li>
+        <li><strong>Security Filter</strong>: Spring Security intercepts the request to validate the token signature and
+            expiration.</li>
+        <li><strong>Controller Processing</strong>: Validated requests are routed to the specific REST Controller
+            endpoint.</li>
+        <li><strong>Service Layer</strong>: The controller delegates the task to the Service layer where business rules
+            are applied.</li>
+        <li><strong>Data Access</strong>: The Service layer invokes the Repository interface to perform CRUD operations.
+        </li>
+        <li><strong>Database</strong>: Hibernate executes the optimized SQL query against the MySQL database.</li>
+        <li><strong>Response</strong>: The result set is mapped back to Entity objects and returned up the chain as a
+            JSON response to update the UI.</li>
+    </ol>
+
+    <div class="mermaid">
+        graph TD
+        User((User)) -->|1. Action| Frontend[Angular Frontend]
+        Frontend -->|2. HTTP Request| Security[Spring Security Filter]
+        Security -->|3. Validate Token| Auth[JWT Auth Provider]
+        Auth -->|4. Allow/Deny| Controller[REST Controller Layer]
+        Controller -->|5. DTO Transfer| Service[Service Layer Logic]
+        Service -->|6. Entity Ops| Repo[JPA Repository Interface]
+        Repo -->|7. SQL Query| DB[(MySQL Database)]
+        DB -->|8. Result Set| Repo
+        Repo -->|9. Entities| Service
+        Service -->|10. DTOs| Controller
+        Controller -->|11. JSON Response| Frontend
+        Frontend -->|12. Update UI| User
+    </div>
+
+    <h3>2.2 Architectural Pattern</h3>
+    <p>
+        The project follows a <strong>Layered Architecture</strong> pattern to ensure separation of concerns,
+        scalability, and maintainability.
+    </p>
+    <ul>
+        <li><strong>Presentation Layer (Frontend)</strong>: Handles UI rendering and user interactions using Angular
+            components.</li>
+        <li><strong>API Layer (Controller)</strong>: Defines RESTful endpoints and handles HTTP requests/responses.</li>
+        <li><strong>Business Layer (Service)</strong>: Contains the core application logic and transaction management.
+        </li>
+        <li><strong>Persistence Layer (Repository)</strong>: Abstraction layer for direct database interactions using
+            Hibernate.</li>
+        <li><strong>Database Layer</strong>: Relational data storage using MySQL.</li>
+    </ul>
+
+    <h3>2.3 Order Process Sequence Diagram</h3>
+    <p>The following sequence diagram details the specific interactions occurring when a customer places an order.</p>
+    <div class="mermaid">
+        sequenceDiagram
+        participant Customer
+        participant Frontend as Angular UI
+        participant API as Backend API
+        participant DB as Database
+
+        Customer->>Frontend: Clicks "Place Order"
+        Frontend->>API: POST /api/orders (JWT Token)
+        Note over API: Validation & Security Check
+        API->>DB: Check Restaurant Status
+        DB-->>API: Open
+        API->>DB: Save Order & Items
+        DB-->>API: Order ID #123
+        API-->>Frontend: 200 OK (Order Confirmed)
+        Frontend-->>Customer: Show "Order Success" Page
+    </div>
+
+    <div class="section-break"></div>
+
+    <h2 id="frontend">3. Frontend Components (Angular)</h2>
+
+    <h3>3.1 Technology & Structure</h3>
+    <p>
+        The frontend is built using <strong>Angular (Latest Version)</strong>, utilizing its modular design system. The
+        application is structured into Feature Modules (`Auth`, `Admin`, `Customer`, `Restaurant`) to enable lazy
+        loading and better code organization.
+    </p>
+
+    <h3>3.2 Authentication Module (<code>features/auth</code>)</h3>
+    <ul>
+        <li><strong>Login Component</strong>: Captures user credentials and sends them to the backend. Upon success, it
+            stores the received JWT token in local storage for session management.</li>
+        <li><strong>Register Component</strong>: A dynamic form that adapts based on the selected role (Customer or
+            Restaurant Owner), collecting necessary initial data like name, email, and phone.</li>
+    </ul>
+
+    <h3>3.3 Admin Module (<code>features/admin</code>)</h3>
+    <ul>
+        <li><strong>Dashboard Component</strong>: The central hub for administrators to view platform-wide statistics
+            such as total users, active restaurants, and total orders.</li>
+        <li><strong>Restaurant Management</strong>: A table view allowing admins to approve pending restaurant
+            registrations or block/unblock existing ones.</li>
+        <li><strong>User Management</strong>: A list view of all registered users (Customers and Owners) with options to
+            manage their accounts.</li>
+        <li><strong>Coupon Management</strong>: A CRUD interface for creating discount codes (e.g., "SAVE20") with
+            expiry dates and usage limits.</li>
+    </ul>
+
+    <h3>3.4 Customer Module (<code>features/customer</code>)</h3>
+    <ul>
+        <li><strong>Home Component</strong>: The landing page featuring a search bar, promotional banners, and a list of
+            top-rated restaurants. Implements filtering logic based on cuisine or name.</li>
+        <li><strong>Restaurant Detail Component</strong>: Displays the full menu categorized by sections (Starters, Main
+            Course, etc.). Users can add items to their global cart state from here.</li>
+        <li><strong>Cart & Checkout</strong>: The Cart component calculates totals, taxes, and manages quantities. The
+            Checkout component collects delivery addresses and finalizes the order.</li>
+    </ul>
+
+    <h3>3.5 Restaurant Module (<code>features/restaurant</code>)</h3>
+    <ul>
+        <li><strong>Dashboard</strong>: Visualization of daily metrics including total orders, revenue, and active order
+            counts.</li>
+        <li><strong>Menu Management</strong>: A CRUD interface allowing owners to upload food images, set prices, and
+            mark items as "Out of Stock".</li>
+        <li><strong>Order Management</strong>: A real-time list of incoming orders. Owners can update status from
+            "Pending" to "Preparing", "Ready", and "Delivered".</li>
+        <li><strong>Restaurant Profile</strong>: A form to update restaurant details like name, description, address,
+            and opening hours.</li>
+    </ul>
+
+    <div class="section-break"></div>
+
+    <h2 id="backend">4. Backend Components (Spring Boot)</h2>
+
+    <h3>4.1 Security Configuration</h3>
+    <p>
+        The <code>SecurityConfig</code> class is the backbone of the application's security. It implements a
+        <strong>Stateless Authentication</strong> mechanism using JWT (JSON Web Tokens).
+    </p>
+    <ul>
+        <li><strong>SecurityFilterChain</strong>: Configures HTTP security to disable CSRF (unnecessary for stateless
+            APIs), enables CORS to allow frontend communication, and defines public vs. protected endpoints.</li>
+        <li><strong>JwtAuthenticationFilter</strong>: An internal filter that intercepts every request, extracts the
+            "Authorization" header, validates the JWT token, and sets the SecurityContext for the current thread.</li>
+        <li><strong>PasswordEncoder</strong>: Uses <code>BCryptPasswordEncoder</code> to hash passwords before storing
+            them in the database, ensuring that raw passwords are never compromised.</li>
+    </ul>
+
+    <h3>4.2 Controller Layer (API)</h3>
+    <p>
+        Controllers act as the entry point for the backend. For example, the <code>RestaurantController.java</code>:
+    </p>
+    <ul>
+        <li><strong>@RestController</strong>: Marks the class as a web controller handling JSON.</li>
+        <li><strong>Endpoints</strong>:
+            <ul>
+                <li><code>POST /api/restaurants</code>: registers a new restaurant.</li>
+                <li><code>GET /api/restaurants</code>: accepts query parameters (search, cuisine) to filter results.
+                </li>
+                <li><code>PUT /api/restaurant/status/{id}</code>: allows owners to toggle their restaurant's open/closed
+                    status.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>4.3 Service Layer (Business Logic)</h3>
+    <p>
+        The Service layer bridges the gap between the controller and data. <code>RestaurantService.java</code> handles:
+    </p>
+    <ul>
+        <li><strong>Validation</strong>: Ensuring a restaurant doesn't already exist or that the owner has the correct
+            permissions.</li>
+        <li><strong>Command Processing</strong>: When searching for restaurants, it uses Java Streams or Repository
+            methods to filter by name, location, and approval status.</li>
+        <li><strong>Transaction Management</strong>: Ensures that when an order is placed, inventory is checked and
+            order records are saved atomically.</li>
+    </ul>
+
+    <h3>4.4 Data Transfer Objects (DTOs)</h3>
+    <p>
+        DTOs (like <code>RestaurantRequest</code>, <code>OrderResponse</code>) are simple objects used to transfer data
+        between the client and server. They are crucial for decoupling the internal database entities from the external
+        API contract, allowing us to hide sensitive fields (like passwords) and aggregate data.
+    </p>
+
+    <h3>4.5 Model Layer (Entities)</h3>
+    <p>
+        The data models represent the database tables. Key entities include:
+    </p>
+    <ul>
+        <li><strong>User</strong>: Stores credentials, roles (`ADMIN`, `CUSTOMER`, `OWNER`), and contact info.</li>
+        <li><strong>Restaurant</strong>: Linked to a `User` (Owner) via a `@OneToOne` relationship. Contains details
+            like address, rating, and approval status.</li>
+        <li><strong>Order</strong>: The central entity linking a `User` (Customer), a `Restaurant`, and multiple
+            `OrderItem` entities via `@OneToMany` relationships. It tracks the total price and current status.</li>
+    </ul>
+
+    <h3>4.6 Repository Layer</h3>
+    <p>
+        Extends <code>JpaRepository</code> to provide out-of-the-box CRUD operations. We also define custom query
+        methods, such as `findByOwnerId(Long id)` or `findByCuisinesContainingIgnoreCase(String cuisine)`, allowing
+        Spring Data JPA to automatically generate efficient SQL queries.
+    </p>
+
+    <div class="section-break"></div>
+
+    <h2 id="database">5. Database Configuration & Schema</h2>
+    <p>
+        The system runs on <strong>MySQL 8.0</strong>. The connection properties are defined in
+        <code>application.properties</code>.
+    </p>
+
+    <pre><code># Server Configuration
+server.port=8080
+spring.application.name=backend
+
+# Database Connection
+spring.datasource.url=jdbc:mysql://localhost:3306/eat_easy_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&createDatabaseIfNotExist=true
+spring.datasource.username=root
+spring.datasource.password=17072001
+
+# JPA / Hibernate Configuration
+# Automatically updates schema based on entity changes
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+
+# JWT Security Settings
+jwt.secret=MySuperSecretKeyForEatEasyApp12345678901234567890
+jwt.expiration-ms=86400000</code></pre>
+
+    <h3>5.1 Database Schema Structure</h3>
+    <p>
+        The following table outlines the key tables in the <code>eat_easy_db</code> database and their primary columns.
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>Table Name</th>
+                <th>Description</th>
+                <th>Key Columns (Type)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>users</code></td>
+                <td>Stores all user accounts (Admin, Customer, Owner).</td>
+                <td>
+                    <code>id</code> (BIGINT, PK)<br>
+                    <code>email</code> (VARCHAR, Unique)<br>
+                    <code>password</code> (VARCHAR)<br>
+                    <code>role</code> (ENUM: ADMIN, CUSTOMER, RESTAURANT_OWNER)
+                </td>
+            </tr>
+            <tr>
+                <td><code>restaurant</code></td>
+                <td>Stores restaurant details.</td>
+                <td>
+                    <code>id</code> (BIGINT, PK)<br>
+                    <code>name</code> (VARCHAR)<br>
+                    <code>owner_id</code> (BIGINT, FK -> users.id)<br>
+                    <code>status</code> (ENUM: PENDING, APPROVED, BLOCKED)
+                </td>
+            </tr>
+            <tr>
+                <td><code>menu_category</code></td>
+                <td>Categories for grouping menu items.</td>
+                <td>
+                    <code>id</code> (BIGINT, PK)<br>
+                    <code>name</code> (VARCHAR)<br>
+                    <code>restaurant_id</code> (BIGINT, FK -> restaurant.id)
+                </td>
+            </tr>
+            <tr>
+                <td><code>menu_item</code></td>
+                <td>Individual food items.</td>
+                <td>
+                    <code>id</code> (BIGINT, PK)<br>
+                    <code>name</code> (VARCHAR)<br>
+                    <code>price</code> (DOUBLE)<br>
+                    <code>category_id</code> (BIGINT, FK -> menu_category.id)
+                </td>
+            </tr>
+            <tr>
+                <td><code>orders</code></td>
+                <td>Stores customer orders.</td>
+                <td>
+                    <code>id</code> (BIGINT, PK)<br>
+                    <code>customer_id</code> (BIGINT, FK -> users.id)<br>
+                    <code>restaurant_id</code> (BIGINT, FK -> restaurant.id)<br>
+                    <code>total_price</code> (DOUBLE)<br>
+                    <code>status</code> (VARCHAR)
+                </td>
+            </tr>
+            <tr>
+                <td><code>order_item</code></td>
+                <td>Items within an order.</td>
+                <td>
+                    <code>id</code> (BIGINT, PK)<br>
+                    <code>order_id</code> (BIGINT, FK -> orders.id)<br>
+                    <code>menu_item_id</code> (BIGINT, FK -> menu_item.id)<br>
+                    <code>quantity</code> (INT)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>5.2 Entity Relationship Diagram</h3>
+    <p>This diagram visualizes the relationships between the core entities in the database.</p>
+    <div class="mermaid" style="width: 75%; margin: 0 auto;">
+        erDiagram
+        USER ||--o{ ORDER : places
+        USER ||--o{ RESTAURANT : owns
+        RESTAURANT ||--o{ MENU_CATEGORY : has
+        RESTAURANT ||--o{ ORDER : receives
+        MENU_CATEGORY ||--o{ MENU_ITEM : contains
+        ORDER ||--|{ ORDER_ITEM : includes
+        MENU_ITEM ||--o{ ORDER_ITEM : is_in
+
+        USER {
+        bigint id PK
+        string email
+        string role
+        }
+        RESTAURANT {
+        bigint id PK
+        string name
+        boolean open
+        }
+        ORDER {
+        bigint id PK
+        double total_price
+        string status
+        }
+    </div>
+
+    <div class="section-break"></div>
+
+    <h2 id="credentials">6. User Credentials (Test Data)</h2>
+    <p>
+        The database is pre-seeded with the following accounts to facilitate immediate testing and demonstration of all
+        user roles.
+    </p>
+
+    <h3>6.1 System Administrator</h3>
+    <table>
+        <tr>
+            <th>Role</th>
+            <th>Email</th>
+            <th>Password</th>
+        </tr>
+        <tr>
+            <td>Admin</td>
+            <td><code>admin@eateasy.com</code></td>
+            <td><code>admin123</code></td>
+        </tr>
+    </table>
+
+    <h3>6.2 Standard Customer</h3>
+    <table>
+        <tr>
+            <th>Role</th>
+            <th>Email</th>
+            <th>Password</th>
+        </tr>
+        <tr>
+            <td>Customer</td>
+            <td><code>user@eateasy.com</code></td>
+            <td><code>user123</code></td>
+        </tr>
+    </table>
+
+    <h3>6.3 Restaurant Owners</h3>
+    <table>
+        <tr>
+            <th>Restaurant Name</th>
+            <th>Owner Email</th>
+            <th>Password</th>
+        </tr>
+        <tr>
+            <td>Chettinad Spice</td>
+            <td><code>owner1@eateasy.com</code></td>
+            <td><code>owner1</code></td>
+        </tr>
+        <tr>
+            <td>Spice Haven</td>
+            <td><code>owner2@eateasy.com</code></td>
+            <td><code>owner2</code></td>
+        </tr>
+        <tr>
+            <td>Italiano Delight</td>
+            <td><code>owner3@eateasy.com</code></td>
+            <td><code>owner3</code></td>
+        </tr>
+        <tr>
+            <td>Dragon Wok</td>
+            <td><code>owner4@eateasy.com</code></td>
+            <td><code>owner4</code></td>
+        </tr>
+        <tr>
+            <td>Tandoori Flames</td>
+            <td><code>owner5@eateasy.com</code></td>
+            <td><code>owner5</code></td>
+        </tr>
+        <tr>
+            <td>KFC</td>
+            <td><code>owner6@eateasy.com</code></td>
+            <td><code>owner6</code></td>
+        </tr>
+        <tr>
+            <td>SS Hyderabad Biryani</td>
+            <td><code>owner7@eateasy.com</code></td>
+            <td><code>owner7</code></td>
+        </tr>
+        <tr>
+            <td>Dindigul Thalappakatti</td>
+            <td><code>owner8@eateasy.com</code></td>
+            <td><code>owner8</code></td>
+        </tr>
+        <tr>
+            <td>Hotel Saravana Bhavan</td>
+            <td><code>owner9@eateasy.com</code></td>
+            <td><code>owner9</code></td>
+        </tr>
+        <tr>
+            <td>Domino's Pizza</td>
+            <td><code>owner10@eateasy.com</code></td>
+            <td><code>owner10</code></td>
+        </tr>
+        <tr>
+            <td>Adyar Ananda Bhavan</td>
+            <td><code>owner11@eateasy.com</code></td>
+            <td><code>owner11</code></td>
+        </tr>
+    </table>
+
+    <div class="section-break"></div>
+
+    <h2 id="future">7. Future Integrations</h2>
+    <p>
+        While EatEasy currently provides a robust foundation for food delivery, the platform is designed with
+        extensibility in mind. Several enhancements are planned for future iterations to improve user engagement and
+        operational efficiency:
+    </p>
+    <ul>
+        <li><strong>Payment Gateway Integration</strong>: Integrating third-party payment processors like Stripe or
+            Razorpay to facilitate secure online transactions, replacing the current cash/simulated flow.</li>
+        <li><strong>Real-Time Delivery Tracking</strong>: Implementing WebSocket or Firebase integration to provide live
+            GPS tracking of delivery drivers for customers.</li>
+        <li><strong>Mobile Application</strong>: Developing native mobile applications (iOS and Android) using Ionic or
+            React Native to reach a broader audience and utilize device-specific features like push notifications.</li>
+        <li><strong>AI-Driven Recommendations</strong>: Utilizing machine learning algorithms to suggest restaurants and
+            dishes to users based on their order history and preferences.</li>
+        <li><strong>Chat Support</strong>: Adding an in-app chat feature to allow direct communication between
+            customers, restaurant owners, and support staff.</li>
+    </ul>
+
+    <h2 id="conclusion">8. Conclusion</h2>
+    <p>
+        <strong>EatEasy</strong> successfully demonstrates the implementation of a modern, scalable, and secure
+        full-stack web application. By leveraging the power of <strong>Angular</strong> for a dynamic frontend and
+        <strong>Spring Boot</strong> for a robust backend, the project achieves a seamless user experience across
+        multiple roles.
+    </p>
+    <p>
+        The system effectively handles complex relationships between users, restaurants, and orders, ensuring data
+        integrity and secure access control. The inclusion of a comprehensive dashboard, real-time status updates, and
+        detailed analytics provides tangible value to restaurant owners and administrators. This project serves as a
+        solid proof-of-concept for a commercial-grade food delivery platform, with clear pathways for future scalability
+        and feature expansion.
+    </p>
+
+</body>
+
+</html>

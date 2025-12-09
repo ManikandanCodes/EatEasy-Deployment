@@ -1,0 +1,67 @@
+<div class="order-history-container">
+  <h2>Your Orders</h2>
+
+  <div *ngIf="loading" class="loading">Loading orders...</div>
+
+  <div *ngIf="!loading && orders.length === 0" class="empty">
+    <p>No past orders found.</p>
+    <button routerLink="/customer/restaurants">Explore Restaurants</button>
+  </div>
+
+  <div class="orders-grid" *ngIf="!loading && orders.length > 0">
+    <div class="order-card" *ngFor="let o of orders">
+
+      <div class="header">
+        <h3>{{ o.restaurant?.name }}</h3>
+        <span class="status" [ngClass]="o.status.toLowerCase()">{{ o.status }}</span>
+      </div>
+
+      <p class="date">{{ o.orderTime | date:'medium' }}</p>
+
+      <p class="amount">Total: ₹{{ o.totalPrice }}</p>
+
+      <div class="items">
+        <span *ngFor="let item of o.items">
+          {{ item.menuItem?.name }} (x{{ item.quantity }})
+        </span>
+      </div>
+
+      <div class="actions">
+        <button class="track-btn"
+          *ngIf="['PLACED', 'ACCEPTED', 'PREPARING', 'READY', 'OUT_FOR_DELIVERY'].includes(o.status)"
+          (click)="trackOrder(o.id)">
+           Track Order
+        </button>
+        <button class="rate-btn" *ngIf="o.status === 'DELIVERED'" (click)="rateOrder(o)">
+          ⭐ Rate Order
+        </button>
+        <button class="reorder-btn" (click)="reorder(o)">Reorder</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="rating-modal-overlay" [class.visible]="showRatingModal" (click)="closeRatingModal()">
+  <div class="rating-modal-content" (click)="$event.stopPropagation()">
+    <h2>Rate Your Order</h2>
+    <p class="restaurant-name">{{ selectedOrder?.restaurant?.name || 'Restaurant' }}</p>
+
+    <div class="star-rating">
+      <span class="star" [class.filled]="1 <= rating" (click)="setRating(1)">★</span>
+      <span class="star" [class.filled]="2 <= rating" (click)="setRating(2)">★</span>
+      <span class="star" [class.filled]="3 <= rating" (click)="setRating(3)">★</span>
+      <span class="star" [class.filled]="4 <= rating" (click)="setRating(4)">★</span>
+      <span class="star" [class.filled]="5 <= rating" (click)="setRating(5)">★</span>
+    </div>
+
+    <textarea #commentBox placeholder="Write a comment (optional)..." rows="4" class="comment-input" [value]="comment"
+      (input)="comment = commentBox.value"></textarea>
+
+    <div class="modal-buttons">
+      <button class="btn-cancel" (click)="closeRatingModal()">Cancel</button>
+      <button class="btn-submit" (click)="submitRating()">Submit Review</button>
+    </div>
+  </div>
+</div>

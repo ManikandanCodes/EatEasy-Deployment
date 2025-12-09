@@ -1,0 +1,114 @@
+<div class="home-container">
+
+
+  <section class="hero-section">
+    <div class="hero-content container">
+      <h1 class="hero-title animate-fade-in">
+        Delicious Food,<br>Delivered To Your Door
+      </h1>
+      <p class="hero-subtitle animate-fade-in">
+        Order from the best restaurants in town with just a few clicks.
+      </p>
+
+      <div class="search-box animate-fade-in" [class.mobile]="isMobileView">
+
+        <div class="input-group">
+          <i class="icon-location"></i>
+          <input type="text" class="search-input" placeholder="Enter your delivery location" [value]="location"
+            (input)="location = $any($event.target).value">
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="input-group">
+          <i class="icon-search"></i>
+          <input type="text" class="search-input" placeholder="Search for food or restaurants" [value]="searchText"
+            (input)="searchText = $any($event.target).value">
+        </div>
+
+        <button (click)="searchRestaurants()" class="btn btn-primary search-btn">
+          Find Food
+        </button>
+      </div>
+    </div>
+
+    <div class="hero-overlay"></div>
+  </section>
+
+
+
+  <section class="section container">
+    <div class="section-header flex justify-between items-center">
+      <h3>Popular Cuisines</h3>
+      <a routerLink="/customer/restaurants" class="view-all">
+        View All →
+      </a>
+    </div>
+
+    <div class="cuisine-grid">
+      <div *ngFor="let c of cuisines" class="cuisine-card" (click)="selectCuisine(c)">
+        <div class="cuisine-icon">{{ c?.charAt(0) }}</div>
+        <span class="cuisine-name">{{ c }}</span>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section container bg-light">
+    <h3 class="section-title">Special Offers</h3>
+
+    <div class="offers-grid">
+      <div *ngFor="let coupon of coupons; let i = index" class="offer-card"
+        [ngClass]="i % 2 === 0 ? 'gradient-1' : 'gradient-2'">
+        <div class="offer-content">
+          <span class="offer-tag">{{ coupon.type }}</span>
+          <h4>{{ coupon.type === 'PERCENTAGE' ? coupon.discount + '% OFF' : '₹' + coupon.discount + ' OFF' }}</h4>
+          <p>Use code <strong>{{ coupon.code }}</strong></p>
+
+          <button class="btn btn-white btn-sm" (click)="copyCode(coupon.code)">Copy Code</button>
+        </div>
+
+        <div class="offer-image">🎁</div>
+      </div>
+
+      <div *ngIf="coupons.length === 0" class="offer-card gradient-1">
+        <div class="offer-content">
+          <h4>No active offers</h4>
+          <p>Check back later for exciting deals!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section container">
+    <div class="section-header flex justify-between items-center">
+      <h3>Top Restaurants</h3>
+      <a routerLink="/customer/restaurants" class="view-all">View All →</a>
+    </div>
+
+    <div class="restaurant-grid">
+
+      <div class="restaurant-card" *ngFor="let r of topRestaurants">
+
+        <img [src]="r?.imageUrl || 'assets/default-restaurant.jpg'" alt="Restaurant" class="restaurant-img">
+
+        <div class="restaurant-info">
+          <h4>{{ r?.name }}</h4>
+          <p>{{ r?.cuisines }}</p>
+
+          <div class="rating" *ngIf="r?.rating">
+            ⭐ {{ r?.rating }}
+          </div>
+
+          <button [routerLink]="'/customer/restaurant/' + r?.id" class="btn btn-primary btn-sm">
+            View Menu
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+</div>

@@ -1,0 +1,34 @@
+<div class="auth-container">
+  <h2>Create Account</h2>
+
+  <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
+  <p class="success" *ngIf="successMsg">{{ successMsg }}</p>
+
+  <form (submit)="onRegister(); $event.preventDefault()">
+
+    <label>Name</label>
+    <input type="text" [value]="name" (input)="name = $any($event.target).value" required>
+
+    <label>Email</label>
+    <input type="email" [value]="email" (input)="email = $any($event.target).value" required>
+
+    <label>Phone</label>
+    <input type="text" [value]="phone" (input)="phone = $any($event.target).value" required>
+
+    <label>Password</label>
+    <input type="password" [value]="password" (input)="password = $any($event.target).value" required>
+
+    <label>Role</label>
+    <select [value]="role" (change)="role = $any($event.target).value">
+      <option value="CUSTOMER">Customer</option>
+      <option value="RESTAURANT_OWNER">Restaurant Owner</option>
+    </select>
+
+    <button type="submit">Register</button>
+  </form>
+
+  <p>
+    Already have an account?
+    <a routerLink="/login">Login</a>
+  </p>
+</div>

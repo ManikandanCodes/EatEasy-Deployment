@@ -1,0 +1,48 @@
+<div class="add-restaurant-container">
+    <div class="form-card">
+        <h1>Add Your Restaurant</h1>
+        <p class="subtitle">Fill in the details to register your restaurant</p>
+
+
+        <div class="error-msg" *ngIf="error">{{ error }}</div>
+
+        
+        <div>
+
+           
+            <div class="form-group">
+                <label for="name">Restaurant Name *</label>
+                <input type="text" id="name" [value]="name" (input)="updateName($event)"
+                    placeholder="e.g., Tasty Bites Restaurant">
+            </div>
+
+        
+            <div class="form-group">
+                <label for="address">Address *</label>
+                <textarea id="address" [value]="address" (input)="updateAddress($event)" rows="3"
+                    placeholder="Full address with city and pincode"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="cuisine">Cuisine Type *</label>
+                <input type="text" id="cuisine" [value]="cuisine" (input)="updateCuisine($event)"
+                    placeholder="e.g., Italian, Chinese, Indian">
+            </div>
+
+
+            <div class="form-group">
+                <label for="phone">Contact Phone *</label>
+                <input type="tel" id="phone" [value]="phone" (input)="updatePhone($event)"
+                    placeholder="+1 234 567 8900">
+            </div>
+
+           
+            <button type="button" class="submit-btn" (click)="submitForm()">
+                Add Restaurant
+            </button>
+
+     
+            <a routerLink="/owner/dashboard" class="cancel-link">Cancel</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="edit-restaurant-container">
+    <div class="header">
+        <h2>✏️ Edit Restaurant Details</h2>
+    </div>
+
+    <div *ngIf="loading" class="loading">
+        Loading restaurant details...
+    </div>
+
+    <div *ngIf="errorMsg" class="error-msg">
+        {{ errorMsg }}
+    </div>
+
+
+    <div *ngIf="!loading && restaurant" class="edit-form">
+
+        <div class="form-group">
+            <label for="name">Restaurant Name *</label>
+            <input type="text" id="name" [value]="restaurant.name" (input)="updateName($event)"
+                placeholder="Enter restaurant name" />
+        </div>
+
+        <div class="form-group">
+            <label for="address">Address *</label>
+            <textarea id="address" [value]="restaurant.address" (input)="updateAddress($event)" rows="3"
+                placeholder="Enter full address"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="cuisine">Cuisine Type *</label>
+            <input type="text" id="cuisine" [value]="restaurant.cuisines" (input)="updateCuisines($event)"
+                placeholder="e.g., Italian, Chinese, Indian" />
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" [value]="restaurant.phone" (input)="updatePhone($event)"
+                placeholder="Enter contact number" />
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" [value]="restaurant.description" (input)="updateDescription($event)" rows="4"
+                placeholder="Describe your restaurant..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="imageUrl">Image URL</label>
+            <input type="url" id="imageUrl" [value]="restaurant.imageUrl" (input)="updateImageUrl($event)"
+                placeholder="https://example.com/image.jpg" />
+            <small>Enter a URL for your restaurant's image</small>
+        </div>
+
+        <div class="form-group checkbox-group">
+            <label>
+                <input type="checkbox" [checked]="restaurant.isOpen" (change)="updateIsOpen($event)" />
+                <span>Restaurant is currently open</span>
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn btn-primary" (click)="saveChanges()">💾 Save Changes</button>
+            <button type="button" class="btn btn-secondary" (click)="cancel()">❌ Cancel</button>
+        </div>
+
+    </div>
+</div>

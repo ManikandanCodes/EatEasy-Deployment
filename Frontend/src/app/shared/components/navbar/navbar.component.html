@@ -1,0 +1,59 @@
+<nav class="navbar">
+  <div class="nav-brand">
+    Eat <span class="highlight">Easy</span>
+  </div>
+
+
+  <div class="desktop-menu">
+
+    <a routerLink="/customer/home" routerLinkActive="active">Home</a>
+
+
+    <a *ngIf="isLoggedIn" routerLink="/customer/cart" routerLinkActive="active">
+      Cart <span *ngIf="cartCount > 0" class="badge">{{ cartCount }}</span>
+    </a>
+
+
+    <a *ngIf="!isLoggedIn" routerLink="/login" routerLinkActive="active">
+      Login
+    </a>
+
+    <a *ngIf="!isLoggedIn" routerLink="/register" routerLinkActive="active">
+      Register
+    </a>
+
+
+    <a *ngIf="isLoggedIn" routerLink="/customer/orders" routerLinkActive="active">
+      My Orders
+    </a>
+
+    <a *ngIf="isLoggedIn" (click)="logout()" class="logout-btn">
+      Logout
+    </a>
+
+  </div>
+
+
+  <div class="mobile-toggle" (click)="toggleMenu()" [class.active]="menuOpen">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+
+
+  <div class="mobile-menu" [class.open]="menuOpen">
+
+    <a routerLink="/customer/home" (click)="toggleMenu()">Home</a>
+
+    <a *ngIf="isLoggedIn" routerLink="/customer/cart" (click)="toggleMenu()">
+      Cart <span *ngIf="cartCount > 0" class="badge">{{ cartCount }}</span>
+    </a>
+
+    <a *ngIf="!isLoggedIn" routerLink="/login" (click)="toggleMenu()">Login</a>
+    <a *ngIf="!isLoggedIn" routerLink="/register" (click)="toggleMenu()">Register</a>
+
+    <a *ngIf="isLoggedIn" routerLink="/customer/orders" (click)="toggleMenu()">My Orders</a>
+    <a *ngIf="isLoggedIn" (click)="logout()">Logout</a>
+
+  </div>
+</nav>

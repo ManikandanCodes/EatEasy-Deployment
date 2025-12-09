@@ -1,0 +1,36 @@
+h2 {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #e64a19;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+}

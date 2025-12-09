@@ -1,0 +1,41 @@
+<h2>Your Cart</h2>
+
+<div *ngIf="items.length === 0" class="empty">
+  <p>Your cart is empty 😕</p>
+  <button routerLink="/customer/restaurants">Browse Restaurants</button>
+</div>
+
+<div *ngIf="items.length > 0" class="cart-container">
+
+
+  <div class="item" *ngFor="let item of items">
+    <div class="details">
+      <h3>{{ item.name }}</h3>
+      <p>₹{{ item.price }}</p>
+    </div>
+
+    <div class="actions">
+      <div class="quantity-controls">
+        <button (click)="decrease(item)">−</button>
+        <span>{{ item.quantity }}</span>
+        <button (click)="increase(item)">+</button>
+      </div>
+      <button class="remove" (click)="remove(item)">Remove</button>
+    </div>
+  </div>
+
+
+  <div class="summary">
+    <p>Subtotal <span>₹{{ subtotal }}</span></p>
+    <p>Tax (5%) <span>₹{{ tax }}</span></p>
+    <p>Delivery Fee <span>₹{{ deliveryFee }}</span></p>
+    <hr>
+    <p class="total">Grand Total <span>₹{{ total }}</span></p>
+  </div>
+
+
+  <button class="checkout-btn" (click)="proceedToCheckout()">
+    Proceed to Checkout
+  </button>
+
+</div>

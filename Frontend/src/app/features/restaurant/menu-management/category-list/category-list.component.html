@@ -1,0 +1,37 @@
+<div class="category-container">
+  <div class="header-row"
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <h2 style="margin: 0;">Menu Categories</h2>
+    <a routerLink="/owner/dashboard" class="btn secondary">⬅ Back to Dashboard</a>
+  </div>
+
+
+  <div class="add-category-form">
+    <input [(ngModel)]="newName" placeholder="New category name" class="input-field" />
+    <button class="btn" (click)="addCategory()">Add Category</button>
+  </div>
+
+  <ul class="category-list">
+    <li *ngFor="let cat of categories" class="category-item">
+      <div *ngIf="editing?.id !== cat.id" class="view-mode">
+        <span class="cat-name">{{ cat.name }}</span>
+        <div class="actions">
+          <button class="btn sm" (click)="startEdit(cat)">Edit</button>
+          <button class="btn sm danger" (click)="deleteCategory(cat)">Delete</button>
+          <button class="btn sm" (click)="goToItems(cat)">View Items</button>
+        </div>
+      </div>
+
+
+      <div *ngIf="editing?.id === cat.id" class="edit-mode">
+        <input [(ngModel)]="editName" class="input-field" />
+        <button class="btn sm" (click)="saveEdit()">Save</button>
+        <button class="btn sm secondary" (click)="cancelEdit()">Cancel</button>
+      </div>
+    </li>
+  </ul>
+
+  <div *ngIf="categories.length === 0" class="empty-state">
+    No categories found. Add one to get started!
+  </div>
+</div>

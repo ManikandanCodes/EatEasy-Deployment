@@ -1,0 +1,29 @@
+<div class="login-container">
+
+  <h2>Login to Eat Easy</h2>
+
+
+  <p class="error-msg" *ngIf="errorMsg">{{ errorMsg }}</p>
+
+  <form (submit)="Onlogin(); $event.preventDefault()">
+
+
+    <label>Email</label>
+    <input type="email" required [value]="email" (input)="email = $any($event.target).value"
+      placeholder="Enter your email">
+
+
+    <label>Password</label>
+    <input type="password" required [value]="password" (input)="password = $any($event.target).value"
+      placeholder="Enter your password">
+
+    <button type="submit" [disabled]="!email || !password">Login</button>
+
+  </form>
+
+  <p class="register-link">
+    Don't have an account?
+    <a routerLink="/register">Register here</a>
+  </p>
+
+</div>

@@ -1,0 +1,60 @@
+<div class="dashboard-container" *ngIf="!loading && restaurant">
+  <section class="restaurant-info">
+    <div class="info-content">
+      <h2 class="restaurant-name">{{ restaurant.name }}</h2>
+      <p class="restaurant-address">📍 {{ restaurant.address }}</p>
+      <p class="restaurant-cuisine">🍽️ Cuisine: {{ restaurant.cuisines }}</p>
+      <p class="restaurant-status">
+        Status: <b [style.color]="restaurant.open ? '#4ade80' : '#f87171'">
+          {{ restaurant.open ? 'Open' : 'Closed' }}
+        </b>
+      </p>
+      <div class="action-buttons">
+        <button class="btn" (click)="toggleStatus()">
+          {{ restaurant.open ? '🔒 Close Restaurant' : '🔓 Open Restaurant' }}
+        </button>
+        <button class="btn" (click)="editRestaurant()">✏️ Edit Details</button>
+        <button class="btn" (click)="manageMenu()">📋 Manage Menu</button>
+        <button class="btn" (click)="viewOrders()">📦 View Orders</button>
+        <button class="btn" (click)="viewAnalytics()">📊 Analytics</button>
+      </div>
+    </div>
+    <div class="restaurant-image" *ngIf="restaurant.imageUrl">
+      <img [src]="restaurant.imageUrl" alt="Restaurant Image">
+    </div>
+  </section>
+
+
+  <section class="stats-section">
+    <h3>Today's Overview</h3>
+    <div class="stats-grid">
+      <div class="stat-card orders">
+        <h4>Today's Orders</h4>
+        <p>{{ stats.todayOrders }}</p>
+      </div>
+
+      <div class="stat-card revenue">
+        <h4>Today's Revenue</h4>
+        <p>₹{{ stats.totalRevenue.toFixed(2) }}</p>
+      </div>
+
+      <div class="stat-card items">
+        <h4>Menu Items</h4>
+        <p>{{ stats.menuItems }}</p>
+      </div>
+
+      <div class="stat-card rating">
+        <h4>Average Rating</h4>
+        <p>{{ stats.avgRating || 'N/A' }}</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="error" *ngIf="error && !loading">
+  ⚠️ {{ error }}
+</div>
+
+<div class="loading" *ngIf="loading">
+  <p>Loading restaurant data...</p>
+</div>

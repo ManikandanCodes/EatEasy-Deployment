@@ -1,0 +1,50 @@
+<div class="orders-container">
+  <h2>📦 Incoming Orders</h2>
+
+  <div *ngIf="loading" class="loading">
+    Loading orders...
+  </div>
+
+  <div *ngIf="!loading && orders.length === 0" class="empty-state">
+    <p>No orders available at the moment.</p>
+  </div>
+
+  <div *ngIf="!loading && orders.length > 0" class="orders-grid">
+    <div *ngFor="let order of orders" class="order-card">
+
+      <h3>Order #{{ order.id }}</h3>
+
+      <p><strong>Customer:</strong> {{ order.customer?.name || 'N/A' }}</p>
+      <p><strong>Phone:</strong> {{ order.phone || order.customer?.phone || 'N/A' }}</p>
+      <p><strong>Address:</strong> {{ order.deliveryAddress || order.address || 'N/A' }}</p>
+      <p><strong>Status:</strong> <span class="status" [ngClass]="order.status">{{ order.status }}</span></p>
+      <p><strong>Total:</strong> ₹{{ order.totalPrice }}</p>
+
+      <h4>Items:</h4>
+      <ul>
+        <li *ngFor="let item of order.items">
+          {{ item.menuItem?.name || item.name }} × {{ item.quantity }} - ₹{{ (item.price * item.quantity) }}
+        </li>
+      </ul>
+
+      <div class="actions">
+        <button *ngIf="order.status === 'PLACED'" (click)="updateStatus(order.id, 'ACCEPTED')">✓ Accept</button>
+
+        <button *ngIf="order.status === 'PLACED'" class="reject" (click)="updateStatus(order.id, 'REJECTED')">✗
+          Reject</button>
+
+        <button *ngIf="order.status === 'ACCEPTED'" (click)="updateStatus(order.id, 'PREPARING')">👨‍🍳 Mark
+          Preparing</button>
+
+        <button *ngIf="order.status === 'PREPARING'" (click)="updateStatus(order.id, 'READY')">✓ Mark Ready</button>
+
+        <button *ngIf="order.status === 'READY'" (click)="updateStatus(order.id, 'OUT_FOR_DELIVERY')">🚚 Out for
+          Delivery</button>
+
+        <button *ngIf="order.status === 'OUT_FOR_DELIVERY'" (click)="updateStatus(order.id, 'DELIVERED')">✅ Mark
+          Delivered</button>
+      </div>
+
+    </div>
+  </div>
+</div>

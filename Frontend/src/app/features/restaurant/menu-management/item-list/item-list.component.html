@@ -1,0 +1,86 @@
+<div class="item-container">
+  <div class="header-row"
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <h2 style="margin: 0;">Menu Items</h2>
+    <a routerLink="/owner/dashboard" class="btn secondary">⬅ Back to Dashboard</a>
+  </div>
+
+  <div class="filter-section">
+    <label>Filter by Category:</label>
+    <select [(ngModel)]="filterCategoryId" (change)="loadItems()" class="input-field">
+      <option [ngValue]="null">All Categories</option>
+      <option *ngFor="let cat of categories" [ngValue]="cat.id">{{ cat.name }}</option>
+    </select>
+  </div>
+
+
+  <div class="add-item-form">
+    <h3>Add New Item</h3>
+    <div class="form-row">
+      <input [(ngModel)]="newItem.name" placeholder="Item name" class="input-field" />
+      <input [(ngModel)]="newItem.price" type="number" placeholder="Price" class="input-field price-input" />
+    </div>
+    <div class="form-row">
+      <select [(ngModel)]="newItem.categoryId" class="input-field">
+        <option [ngValue]="0" disabled>Select Category</option>
+        <option *ngFor="let cat of categories" [ngValue]="cat.id">{{ cat.name }}</option>
+      </select>
+      <input [(ngModel)]="newItem.description" placeholder="Description (optional)" class="input-field" />
+    </div>
+    <div class="form-row">
+      <input [(ngModel)]="newItem.imageUrl" placeholder="Image URL (optional)" class="input-field full-width" />
+    </div>
+    <button class="btn" (click)="addItem()">Add Item</button>
+  </div>
+
+  <ul class="item-list">
+    <li *ngFor="let it of items" class="item-card">
+
+      <div *ngIf="!it['editing']" class="view-mode">
+
+        <div class="item-image" *ngIf="it.imageUrl">
+          <img [src]="it.imageUrl" alt="{{ it.name }}" onerror="this.style.display='none'">
+        </div>
+
+        <div class="item-info">
+          <div class="item-header">
+            <strong>{{ it.name }}</strong>
+            <span class="price">₹{{ it.price }}</span>
+          </div>
+          <div class="item-meta">
+            <span class="category-badge">{{ getCategoryName(it.categoryId) }}</span>
+            <p class="description">{{ it.description }}</p>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn sm" (click)="startEdit(it)">Edit</button>
+          <button class="btn sm danger" (click)="deleteItem(it)">Delete</button>
+        </div>
+      </div>
+
+      <div *ngIf="it['editing']" class="edit-mode">
+        <div class="form-row">
+          <input [(ngModel)]="it['editName']" class="input-field" placeholder="Name" />
+          <input [(ngModel)]="it['editPrice']" type="number" class="input-field price-input" placeholder="Price" />
+        </div>
+        <div class="form-row">
+          <select [(ngModel)]="it['editCategoryId']" class="input-field">
+            <option *ngFor="let cat of categories" [ngValue]="cat.id">{{ cat.name }}</option>
+          </select>
+          <input [(ngModel)]="it['editDescription']" class="input-field" placeholder="Description" />
+        </div>
+        <div class="form-row">
+          <input [(ngModel)]="it['editImageUrl']" class="input-field full-width" placeholder="Image URL" />
+        </div>
+        <div class="actions">
+          <button class="btn sm" (click)="saveEdit(it)">Save</button>
+          <button class="btn sm secondary" (click)="cancelEdit(it)">Cancel</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <div *ngIf="items.length === 0" class="empty-state">
+    No items found. Add some delicious food!
+  </div>
+</div>

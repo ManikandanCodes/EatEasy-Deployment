@@ -1,0 +1,257 @@
+.item-container {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  color: var(--text-main);
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  color: var(--text-main);
+}
+
+h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+}
+
+.filter-section {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.add-item-form {
+  background: var(--background-card);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.input-field {
+  flex: 1;
+  padding: 0.8rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: #fff;
+  color: var(--text-main);
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #ff6b6b;
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+}
+
+.price-input {
+  max-width: 120px;
+}
+
+.btn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  background: #ff6b6b;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  background: #ff5252;
+  transform: translateY(-1px);
+}
+
+.btn.sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.btn.danger {
+  background: #ff4757;
+}
+
+.btn.secondary {
+  background: #747d8c;
+}
+
+.item-list {
+  list-style: none;
+  padding: 0;
+}
+
+.item-card {
+  background: var(--background-card);
+  margin-bottom: 1rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  color: var(--text-main);
+}
+
+.view-mode {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.item-header strong {
+  font-size: 1.2rem;
+  color: var(--text-main);
+}
+
+.price {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+.category-badge {
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.description {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 1rem;
+}
+
+.edit-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  background: var(--background-card);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+/* Item Image Styles */
+.item-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-right: 1.5rem;
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+select.input-field {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .item-container {
+    padding: 1rem;
+  }
+
+  .header-row {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .header-row a.btn {
+    text-align: center;
+  }
+
+  .filter-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .price-input {
+    max-width: 100%;
+  }
+
+  .item-card {
+    padding: 1rem;
+  }
+
+  .view-mode {
+    flex-direction: column;
+  }
+
+  .item-image {
+    width: 100%;
+    height: 200px;
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .actions {
+    margin-left: 0;
+    margin-top: 1rem;
+    justify-content: stretch;
+  }
+
+  .actions .btn {
+    flex: 1;
+  }
+
+  .edit-mode .actions {
+    flex-direction: column;
+  }
+}

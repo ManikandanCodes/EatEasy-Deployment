@@ -1,0 +1,203 @@
+<div class="user-management">
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">User Management</h1>
+      <p class="page-subtitle">Manage platform users and their access</p>
+    </div>
+    <div class="header-stats">
+      <div class="stat-pill">
+        <span class="pill-label">Total Users:</span>
+        <span class="pill-value">{{ users.length }}</span>
+      </div>
+      <div class="stat-pill active">
+        <span class="pill-label">Active:</span>
+        <span class="pill-value">{{ getActiveUsersCount() }}</span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="toolbar">
+    <div class="search-box">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
+      <input type="text" placeholder="Search by name, email, or phone..." [value]="searchTerm"
+        (input)="searchTerm = $any($event.target).value; filterUsers()">
+    </div>
+
+    <div class="filter-group">
+      <button class="filter-btn" [class.active]="roleFilter === 'ALL'" (click)="setRoleFilter('ALL')">All Roles</button>
+      <button class="filter-btn" [class.active]="roleFilter === 'CUSTOMER'"
+        (click)="setRoleFilter('CUSTOMER')">Customers</button>
+      <button class="filter-btn" [class.active]="roleFilter === 'RESTAURANT_OWNER'"
+        (click)="setRoleFilter('RESTAURANT_OWNER')">Owners</button>
+      <button class="filter-btn" [class.active]="roleFilter === 'ADMIN'"
+        (click)="setRoleFilter('ADMIN')">Admins</button>
+    </div>
+  </div>
+
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading users...</p>
+  </div>
+
+
+  <div *ngIf="!loading && filteredUsers.length === 0" class="empty-state">
+    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+      <circle cx="12" cy="7" r="4"></circle>
+    </svg>
+    <h3>No Users Found</h3>
+    <p>There are no users matching your criteria.</p>
+  </div>
+
+
+  <div *ngIf="!loading && filteredUsers.length > 0" class="users-grid">
+    <div *ngFor="let user of filteredUsers" class="user-card">
+
+      <div class="card-header">
+        <div class="user-avatar" [ngClass]="user.role?.toLowerCase()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <div class="user-info">
+          <h3 class="user-name">{{ user.name }}</h3>
+          <span class="role-badge" [ngClass]="user.role?.toLowerCase()">{{ getRoleLabel(user.role) }}</span>
+        </div>
+        <div class="status-indicator" [class.active]="user.active" [class.blocked]="!user.active">
+          <span class="status-dot"></span>
+          <span class="status-text">{{ user.active ? 'Active' : 'Blocked' }}</span>
+        </div>
+      </div>
+
+   
+      <div class="card-body">
+        <div class="detail-row">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+          </svg>
+          <span>{{ user.email }}</span>
+        </div>
+
+        <div class="detail-row" *ngIf="user.phone">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path
+              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+            </path>
+          </svg>
+          <span>{{ user.phone }}</span>
+        </div>
+
+        <div class="detail-row">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span>User ID: #{{ user.id }}</span>
+        </div>
+      </div>
+
+
+      <div class="card-actions">
+        <button *ngIf="user.active" class="action-btn block" (click)="blockUser(user.id)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="m4.9 4.9 14.2 14.2"></path>
+          </svg>
+          Block User
+        </button>
+
+        <button *ngIf="!user.active" class="action-btn activate" (click)="activateUser(user.id)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+          </svg>
+          Activate User
+        </button>
+
+        <button class="action-btn details" (click)="viewDetails(user)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 16v-4"></path>
+            <path d="M12 8h.01"></path>
+          </svg>
+          View Details
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal-overlay" *ngIf="selectedUser" (click)="closeDetails()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>User Details</h2>
+        <button class="close-btn" (click)="closeDetails()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="detail-section">
+          <h3>Basic Information</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Name</span>
+              <span class="value">{{ selectedUser.name }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">ID</span>
+              <span class="value">#{{ selectedUser.id }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Role</span>
+              <span class="role-badge" [ngClass]="selectedUser.role?.toLowerCase()">
+                {{ getRoleLabel(selectedUser.role) }}
+              </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Status</span>
+              <span class="status-indicator" [class.active]="selectedUser.active" [class.blocked]="!selectedUser.active"
+                style="display: inline-flex;">
+                <span class="status-dot"></span>
+                <span class="status-text">{{ selectedUser.active ? 'Active' : 'Blocked' }}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3>Contact Information</h3>
+          <div class="info-grid">
+            <div class="info-item full-width">
+              <span class="label">Email</span>
+              <span class="value">{{ selectedUser.email }}</span>
+            </div>
+            <div class="info-item full-width">
+              <span class="label">Phone</span>
+              <span class="value">{{ selectedUser.phone || 'N/A' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="action-btn close" (click)="closeDetails()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

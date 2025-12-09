@@ -1,0 +1,73 @@
+<div class="page-container">
+  <h2>Track Your Order</h2>
+
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Fetching order details...</p>
+  </div>
+
+  <div *ngIf="!loading && order" class="tracking-card">
+
+
+    <div class="restaurant-header">
+      <div class="header-content">
+        <h3>{{ order.restaurant?.name }}</h3>
+        <span class="order-id">Order #{{ order.id }}</span>
+      </div>
+      <div class="order-total">
+        <span class="label">Total Amount</span>
+        <span class="amount">₹{{ order.totalPrice }}</span>
+      </div>
+    </div>
+
+    <div class="content-grid">
+
+      <div class="timeline-section">
+        <h4>Order Status</h4>
+        <div class="timeline">
+          <div *ngFor="let s of statuses; let i = index" class="timeline-item"
+            [class.completed]="i <= getStatusIndex(order.status)" [class.current]="i === getStatusIndex(order.status)">
+
+            <div class="timeline-marker">
+              <div class="dot"></div>
+              <div *ngIf="i < statuses.length - 1" class="line"></div>
+            </div>
+
+            <div class="timeline-content">
+              <p class="status-text">{{ s.replace('_', ' ') | titlecase }}</p>
+              <p *ngIf="i === getStatusIndex(order.status)" class="status-desc">
+                {{ getStatusDescription(s) }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+ 
+      <div class="summary-section">
+        <h4>Order Details</h4>
+        <div class="items-list">
+          <div *ngFor="let item of order.items" class="order-item">
+            <div class="item-info">
+              <span class="item-name">{{ item.menuItem?.name || item.name }}</span>
+              <span class="item-quantity">x {{ item.quantity }}</span>
+            </div>
+            <span class="item-price">₹{{ item.price * item.quantity }}</span>
+          </div>
+        </div>
+
+        <div class="summary-footer">
+          <div class="row">
+            <span>Subtotal</span>
+            <span>₹{{ order.totalPrice }}</span> 
+          </div>
+          <div class="row total">
+            <span>Grand Total</span>
+            <span>₹{{ order.totalPrice }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

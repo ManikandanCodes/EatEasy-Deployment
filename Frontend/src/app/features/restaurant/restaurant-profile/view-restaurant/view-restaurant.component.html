@@ -1,0 +1,55 @@
+<div *ngIf="loading" class="loading-container">
+  <div class="spinner"></div>
+  <p>Loading restaurant profile...</p>
+</div>
+
+<div *ngIf="!loading && restaurant" class="profile-container">
+  <div class="profile-header">
+    <div class="header-content">
+      <h1>{{ restaurant.name }}</h1>
+      <span class="status-badge" [class.open]="restaurant.isOpen" [class.closed]="!restaurant.isOpen">
+        {{ restaurant.isOpen ? 'Open for Business' : 'Currently Closed' }}
+      </span>
+    </div>
+    <div class="header-actions">
+      <button class="btn primary" (click)="editRestaurant()">Edit Details</button>
+      <button class="btn secondary" (click)="toggleStatus()">
+        {{ restaurant.isOpen ? 'Close Restaurant' : 'Open Restaurant' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="profile-details">
+    <div class="detail-card">
+      <h3>Contact Information</h3>
+      <div class="detail-row">
+        <span class="label">Address</span>
+        <span class="value">{{ restaurant.address }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Phone</span>
+        <span class="value">{{ restaurant.phone }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Email</span>
+        <span class="value">{{ restaurant.email }}</span>
+      </div>
+    </div>
+
+    <div class="detail-card">
+      <h3>Restaurant Details</h3>
+      <div class="detail-row">
+        <span class="label">Cuisine Type</span>
+        <span class="value">{{ restaurant.cuisine }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Rating</span>
+        <span class="value">⭐ {{ restaurant.rating || 'New' }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Restaurant ID</span>
+        <span class="value">#{{ restaurant.id }}</span>
+      </div>
+    </div>
+  </div>
+</div>

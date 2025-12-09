@@ -1,0 +1,56 @@
+<div class="checkout-container">
+  <h2>Checkout</h2>
+
+
+  <div class="card">
+    <h3>Delivery Address</h3>
+
+    <label>Name</label>
+    <input type="text" [(ngModel)]="name">
+
+    <label>Phone</label>
+    <input type="text" [(ngModel)]="phone">
+
+    <label>Address</label>
+    <textarea rows="3" [(ngModel)]="address"></textarea>
+
+    <label>Delivery Instructions (optional)</label>
+    <textarea rows="2" [(ngModel)]="instructions"></textarea>
+
+    <label>Payment Method</label>
+    <select [(ngModel)]="paymentMethod">
+      <option value="COD">Cash on Delivery</option>
+      <option value="ONLINE">Online Payment</option>
+    </select>
+  </div>
+
+
+  <div class="card">
+    <h3>Order Summary</h3>
+
+    <div *ngFor="let item of items" class="summary-item">
+      <span>{{ item.name }} x {{ item.quantity }}</span>
+      <span>₹{{ item.price * item.quantity }}</span>
+    </div>
+
+    <hr>
+
+    <p>Subtotal <span>₹{{ subtotal }}</span></p>
+    <p>Tax (5%) <span>₹{{ tax }}</span></p>
+    <p>Delivery Fee <span>₹{{ deliveryFee }}</span></p>
+
+    <div class="coupon-row">
+      <input type="text" [(ngModel)]="couponCode" placeholder="Code">
+      <button (click)="applyCoupon()">Apply</button>
+    </div>
+
+    <p *ngIf="discountAmount > 0" style="color: green;">Discount <span>-₹{{ discountAmount }}</span></p>
+
+    <hr>
+
+    <h3 class="total">Total <span>₹{{ total }}</span></h3>
+
+    <button class="place-btn" (click)="placeOrder()">Place Order</button>
+  </div>
+
+</div>

@@ -1,0 +1,60 @@
+<h2>System Analytics</h2>
+
+<div *ngIf="loading" class="loading">
+  Loading analytics...
+</div>
+
+<div *ngIf="!loading && analytics">
+
+
+  <div class="grid">
+    <div class="card">
+      <h3>Total Orders</h3>
+      <p>{{ analytics.totalOrders }}</p>
+    </div>
+
+    <div class="card">
+      <h3>Completed Orders</h3>
+      <p>{{ analytics.completedOrders }}</p>
+    </div>
+
+    <div class="card">
+      <h3>Cancelled Orders</h3>
+      <p>{{ analytics.cancelledOrders }}</p>
+    </div>
+
+    <div class="card">
+      <h3>Total Revenue</h3>
+      <p>₹ {{ analytics.totalRevenue }}</p>
+    </div>
+  </div>
+
+  
+  <h3 class="section-title">Top Restaurants</h3>
+  <ul class="list">
+    <li *ngFor="let r of analytics.topRestaurants">
+      {{ r.name }} – {{ r.orders }} Orders
+    </li>
+  </ul>
+
+
+  <h3 class="section-title">Monthly Overview</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Month</th>
+        <th>Orders</th>
+        <th>Revenue</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let m of analytics.monthlyStats">
+        <td>{{ m.month }}</td>
+        <td>{{ m.orders }}</td>
+        <td>₹ {{ m.revenue }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
