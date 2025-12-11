@@ -17,7 +17,6 @@ COPY src ./src
 # Build JAR
 RUN mvn clean package -DskipTests
 
-
 # -----------------------------
 # Stage 2: Run JAR with JRE
 # -----------------------------
@@ -28,7 +27,8 @@ WORKDIR /app
 # Copy the built JAR from the build stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Expose the backend port
+# Expose the backend port (Render sets PORT env variable, but 8080 is default)
+ENV PORT=8080
 EXPOSE 8080
 
 # Start the application
