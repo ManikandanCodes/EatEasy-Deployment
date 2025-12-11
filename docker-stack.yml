@@ -18,6 +18,7 @@ services:
       restart_policy:
         condition: on-failure
 
+
   backend:
     image: eateasy-backend:latest
     ports:
@@ -26,27 +27,31 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/eat_easy?allowPublicKeyRetrieval=true&useSSL=false
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
-    depends_on:
-      - db
     networks:
       - eat-easy-network
     deploy:
       replicas: 2
       restart_policy:
         condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 5s
+
 
   frontend:
     image: eateasy-frontend:latest
     ports:
       - "80:80"
-    depends_on:
-      - backend
     networks:
       - eat-easy-network
     deploy:
       replicas: 2
       restart_policy:
         condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 5s
+
 
 networks:
   eat-easy-network:
