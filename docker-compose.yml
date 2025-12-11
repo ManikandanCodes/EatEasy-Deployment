@@ -1,35 +1,9 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  backend:
-    build: ./backend
-    container_name: eat-easy-backend
-    ports:
-      - "8080:8080"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/eat_easy?allowPublicKeyRetrieval=true&useSSL=false
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
-    depends_on:
-      - db
-    networks:
-      - eat-easy-network
-    restart: always
-
-  frontend:
-    build: ./Frontend
-    container_name: eat-easy-frontend
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
-    networks:
-      - eat-easy-network
-    restart: always
 
   db:
     image: mysql:8.0
-    container_name: eat-easy-db
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: eat_easy
@@ -39,11 +13,45 @@ services:
       - db_data:/var/lib/mysql
     networks:
       - eat-easy-network
-    restart: always
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  backend:
+    image: eateasy-backend:latest
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/eat_easy?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      - db
+    networks:
+      - eat-easy-network
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+
+  frontend:
+    image: eateasy-frontend:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - eat-easy-network
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
 
 networks:
   eat-easy-network:
-    driver: bridge
+    driver: overlay
 
 volumes:
   db_data:
+
