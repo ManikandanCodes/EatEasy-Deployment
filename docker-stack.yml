@@ -20,13 +20,15 @@ services:
 
 
   backend:
-    image: eateasy-backend:latest
+    image: eateasy-backend:latest   # Use registry version if multi-node swarm
     ports:
       - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/eat_easy?allowPublicKeyRetrieval=true&useSSL=false
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      - db
     networks:
       - eat-easy-network
     deploy:
@@ -39,7 +41,7 @@ services:
 
 
   frontend:
-    image: eateasy-frontend:latest
+    image: eateasy-frontend:latest   # Use registry version if multi-node
     ports:
       - "80:80"
     networks:
@@ -55,7 +57,7 @@ services:
 
 networks:
   eat-easy-network:
-    driver: overlay
+    external: true     # VERY IMPORTANT since created manually by Jenkins
 
 volumes:
   db_data:
