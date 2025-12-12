@@ -1,5 +1,5 @@
 <div class="orders-container">
-  <h2>📦 Incoming Orders</h2>
+  <h2>Incoming Orders</h2>
 
   <div *ngIf="loading" class="loading">
     Loading orders...
@@ -12,32 +12,41 @@
   <div *ngIf="!loading && orders.length > 0" class="orders-grid">
     <div *ngFor="let order of orders" class="order-card">
 
-      <h3>Order #{{ order.id }}</h3>
+      <div class="order-header">
+        <h3>Order #{{ order.id }}</h3>
+        <span class="status" [ngClass]="order.status">
+          {{ order.status === 'OUT_FOR_DELIVERY' ? 'Out for Delivery' : order.status }}
+        </span>
+      </div>
 
-      <p><strong>Customer:</strong> {{ order.customer?.name || 'N/A' }}</p>
-      <p><strong>Phone:</strong> {{ order.phone || order.customer?.phone || 'N/A' }}</p>
-      <p><strong>Address:</strong> {{ order.deliveryAddress || order.address || 'N/A' }}</p>
-      <p><strong>Status:</strong> <span class="status" [ngClass]="order.status">{{ order.status }}</span></p>
-      <p><strong>Total:</strong> ₹{{ order.totalPrice }}</p>
+      <div class="order-body">
+        <div class="order-info">
+          <p><strong>Customer:</strong> <span>{{ order.customer?.name || 'N/A' }}</span></p>
+          <p><strong>Phone:</strong> <span>{{ order.cell || order.customer?.cell || 'N/A' }}</span></p>
+          <p><strong>Address:</strong> <span>{{ order.deliveryAddress || order.address || 'N/A' }}</span></p>
+          <p><strong>Total:</strong> <span>₹{{ order.totalPrice }}</span></p>
+        </div>
 
-      <h4>Items:</h4>
-      <ul>
-        <li *ngFor="let item of order.items">
-          {{ item.menuItem?.name || item.name }} × {{ item.quantity }} - ₹{{ (item.price * item.quantity) }}
-        </li>
-      </ul>
+        <h4>Items</h4>
+        <ul>
+          <li *ngFor="let item of order.items">
+            <span>{{ item.menuItem?.name || item.name }}</span>
+            <span>×{{ item.quantity }} · ₹{{ (item.price * item.quantity) }}</span>
+          </li>
+        </ul>
 
-      <div class="review-section" *ngIf="order.rating">
-        <h4>Customer Review:</h4>
-        <p class="rating"><strong>Rating:</strong> {{ '★'.repeat(order.rating) }}</p>
-        <p class="comment" *ngIf="order.reviewComment">"{{ order.reviewComment }}"</p>
+        <div class="review-section" *ngIf="order.rating">
+          <h4>Customer Review</h4>
+          <p class="rating">{{ '★'.repeat(order.rating) }} <span style="color:#6b7280; font-size: 0.8em; font-weight: normal;">({{order.rating}}/5)</span></p>
+          <p class="comment" *ngIf="order.reviewComment">"{{ order.reviewComment }}"</p>
+        </div>
       </div>
 
       <div class="actions">
-        <button *ngIf="order.status === 'PLACED'" (click)="updateStatus(order.id, 'ACCEPTED')">✓ Accept</button>
+        <button *ngIf="order.status === 'PLACED'" (click)="updateStatus(order.id, 'ACCEPTED')">✓ Accept Order</button>
 
         <button *ngIf="order.status === 'PLACED'" class="reject" (click)="updateStatus(order.id, 'REJECTED')">✗
-          Reject</button>
+          Reject Order</button>
 
         <button *ngIf="order.status === 'ACCEPTED'" (click)="updateStatus(order.id, 'PREPARING')">👨‍🍳 Mark
           Preparing</button>

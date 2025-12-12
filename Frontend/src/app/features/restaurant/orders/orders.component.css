@@ -1,233 +1,272 @@
+/* Global Container */
 .orders-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
-  font-family: 'Inter', sans-serif;
+  padding: 2.5rem;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #1f2937;
 }
 
+/* Header */
 h2 {
-  font-size: 2rem;
+  font-size: 2.25rem;
   color: #111827;
-  margin-bottom: 2rem;
-  font-weight: 700;
+  margin-bottom: 2.5rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
+/* Loading State */
 .loading {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 400px;
-  font-size: 1.2rem;
+  font-size: 1.125rem;
   color: #6b7280;
+  background: #f9fafb;
+  border-radius: 1rem;
 }
 
 .loading::after {
   content: '';
-  width: 30px;
-  height: 30px;
-  margin-left: 10px;
-  border: 3px solid #e5e7eb;
-  border-top-color: #667eea;
+  width: 40px;
+  height: 40px;
+  margin-top: 1rem;
+  border: 4px solid #e5e7eb;
+  border-top-color: #4f46e5;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: spin 0.8s ease-in-out infinite;
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
+/* Orders Grid */
 .orders-grid {
   display: grid;
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 2rem;
 }
 
+/* Order Card */
 .order-card {
   background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  border-left: 4px solid #3b82f6;
-  transition: all 0.3s ease;
+  border-radius: 16px;
+  padding: 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f3f4f6;
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .order-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Card Header */
+.order-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #f3f4f6;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .order-card h3 {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   color: #111827;
-  margin-bottom: 1rem;
-  font-weight: 600;
+  margin: 0;
+  font-weight: 700;
+}
+
+/* Order Details */
+.order-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+}
+
+.order-info {
+  margin-bottom: 1.5rem;
 }
 
 .order-card p {
   margin: 0.5rem 0;
-  color: #4b5563;
+  color: #6b7280;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  display: flex;
+  justify-content: space-between;
 }
 
 .order-card strong {
-  color: #1f2937;
-  font-weight: 600;
-}
-
-.order-card .status {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.status.PENDING {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.status.ACCEPTED {
-  background: #dbeafe;
-  color: #1e40af;
-}
-
-.status.PREPARING {
-  background: #fce7f3;
-  color: #831843;
-}
-
-.status.READY {
-  background: #d1fae5;
-  color: #065f46;
-}
-
-.status.DELIVERED {
-  background: #d1fae5;
-  color: #065f46;
-}
-
-.status.REJECTED {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-h4 {
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
   color: #374151;
-  font-size: 1rem;
   font-weight: 600;
+}
+
+/* Status Badges */
+.status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status.PENDING { background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; }
+.status.ACCEPTED { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.status.PREPARING { background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; }
+.status.READY { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+.status.OUT_FOR_DELIVERY { background: #faf5ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+.status.DELIVERED { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+.status.REJECTED { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+
+/* Items List */
+h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #111827;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 ul {
   list-style: none;
   padding: 0;
-  margin: 0.5rem 0 1rem 0;
+  margin: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 ul li {
-  padding: 0.5rem;
+  padding: 0.75rem 1rem;
   background: #f9fafb;
-  margin-bottom: 0.25rem;
-  border-radius: 6px;
+  border-bottom: 1px solid #e5e7eb;
   color: #374151;
-}
-
-.actions {
   display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #e5e7eb;
+  justify-content: space-between;
+  font-size: 0.95rem;
 }
 
-.actions button {
-  background: #3b82f6;
-  color: white;
-  border: none;
-  padding: 0.625rem 1.25rem;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
+ul li:last-child {
+  border-bottom: none;
 }
 
-.actions button:hover {
-  background: #2563eb;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.actions button.reject {
-  background: #ef4444;
-}
-
-.actions button.reject:hover {
-  background: #dc2626;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-}
-
-.empty-state {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: #6b7280;
-}
-
-.empty-state p {
-  font-size: 1.1rem;
-}
-
-@media (max-width: 768px) {
-  .orders-container {
-    padding: 1rem;
-  }
-
-  h2 {
-    font-size: 1.5rem;
-  }
-
-  .order-card {
-    padding: 1rem;
-  }
-
-  .actions {
-    flex-direction: column;
-  }
-
-  .actions button {
-    width: 100%;
-  }
-
-  .actions button {
-    width: 100%;
-  }
-}
-
+/* Review Section */
 .review-section {
-  margin: 15px 0;
-  padding: 10px;
-  background: #fff8e1;
-  border: 1px solid #ffe082;
-  border-radius: 8px;
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: linear-gradient(to right, #fffbeb, #ffffff);
+  border: 1px solid #fcd34d;
+  border-radius: 12px;
 }
 
 .review-section h4 {
   margin-top: 0;
-  color: #f57f17;
+  color: #b45309;
+  font-size: 0.875rem;
 }
 
 .review-section .rating {
-  font-size: 1.1em;
-  color: #ffca28;
-  margin-bottom: 5px;
+  font-size: 1.25rem;
+  color: #fbbf24;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
 }
 
 .review-section .comment {
   font-style: italic;
-  color: #555;
-  margin: 5px 0 0;
+  color: #4b5563;
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Actions Footer */
+.actions {
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-top: 1px solid #f3f4f6;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* If only one button, span full width */
+.actions button:only-child {
+  grid-column: span 2;
+}
+
+.actions button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.actions button:hover {
+  background: #4338ca;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.actions button.reject {
+  background: white;
+  color: #ef4444;
+  border: 1px solid #fee2e2;
+}
+
+.actions button.reject:hover {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 6rem 2rem;
+  color: #6b7280;
+  background: #f9fafb;
+  border-radius: 1rem;
+  border: 2px dashed #e5e7eb;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .orders-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .actions {
+    grid-template-columns: 1fr;
+  }
+  
+  .actions button:only-child {
+    grid-column: span 1;
+  }
 }
