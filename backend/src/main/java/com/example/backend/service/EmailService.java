@@ -11,24 +11,25 @@ public class EmailService {
     @Autowired(required = false)
     private JavaMailSender mailSender;
 
-    public void sendEmail(String to, String subject, String body) {
+    public boolean sendEmail(String to, String subject, String body) {
         if (mailSender != null) {
             try {
                 SimpleMailMessage message = new SimpleMailMessage();
                 message.setTo(to);
                 message.setSubject(subject);
                 message.setText(body);
-                message.setFrom("eateasy.demo@gmail.com"); // Placeholder, user needs to config
+                message.setFrom("eateasy.demo@gmail.com");
                 mailSender.send(message);
-                System.out.println("Email sent to " + to);
+                System.out.println("Email sent successfully to " + to);
+                return true;
             } catch (Exception e) {
-                System.err.println("Failed to send email: " + e.getMessage());
+                System.err.println("Failed to send email to " + to + ": " + e.getMessage());
+                e.printStackTrace();
+                return false;
             }
         } else {
-            System.out.println("JavaMailSender is not configured. Skipping email sending.");
-            System.out.println("To: " + to);
-            System.out.println("Subject: " + subject);
-            System.out.println("Body: " + body);
+            System.err.println("JavaMailSender is not configured.");
+            return false;
         }
     }
 }
