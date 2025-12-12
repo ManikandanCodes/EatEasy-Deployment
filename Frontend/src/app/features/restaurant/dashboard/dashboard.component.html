@@ -28,18 +28,18 @@
   <section class="stats-section">
     <div class="stats-header"
       style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-      <h3>Today's Overview</h3>
+      <h3>Restaurant Overview</h3>
       <button (click)="refreshDashboard()" class="btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">🔄 Refresh
         Stats</button>
     </div>
     <div class="stats-grid">
       <div class="stat-card orders">
-        <h4>Today's Orders</h4>
+        <h4>Total Orders</h4>
         <p>{{ stats.todayOrders }}</p>
       </div>
 
       <div class="stat-card revenue">
-        <h4>Today's Revenue</h4>
+        <h4>Total Revenue</h4>
         <p>₹{{ stats.totalRevenue.toFixed(2) }}</p>
       </div>
 
