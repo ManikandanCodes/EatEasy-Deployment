@@ -66,8 +66,13 @@ public class AuthService {
         User savedUser = userRepo.save(userToSave);
 
         // Send Email
-        emailService.sendEmail(savedUser.getEmail(), "EatEasy Registration OTP",
+        // Send Email
+        boolean emailSent = emailService.sendEmail(savedUser.getEmail(), "EatEasy Registration OTP",
                 "Your OTP for registration is: " + otp + ". It expires in 10 minutes.");
+
+        if (!emailSent) {
+            throw new RuntimeException("Failed to send OTP email. Please check the email address or try again later.");
+        }
 
         return savedUser;
     }
@@ -112,8 +117,12 @@ public class AuthService {
         user.setOtpExpiryTime(java.time.LocalDateTime.now().plusMinutes(10));
         userRepo.save(user);
 
-        emailService.sendEmail(user.getEmail(), "EatEasy Registration OTP (Resend)",
+        boolean emailSent = emailService.sendEmail(user.getEmail(), "EatEasy Registration OTP (Resend)",
                 "Your new OTP for registration is: " + otp + ". It expires in 10 minutes.");
+
+        if (!emailSent) {
+            throw new RuntimeException("Failed to resend OTP email.");
+        }
     }
 
     public void forgotPassword(String email) {
@@ -126,8 +135,12 @@ public class AuthService {
         user.setOtpExpiryTime(java.time.LocalDateTime.now().plusMinutes(10));
         userRepo.save(user);
 
-        emailService.sendEmail(user.getEmail(), "EatEasy Reset Password OTP",
+        boolean emailSent = emailService.sendEmail(user.getEmail(), "EatEasy Reset Password OTP",
                 "Your OTP to reset password is: " + otp + ". It expires in 10 minutes.");
+
+        if (!emailSent) {
+            throw new RuntimeException("Failed to send password reset OTP.");
+        }
     }
 
     public void resetPassword(String email, String otp, String newPassword) {
@@ -186,5 +199,10 @@ public class AuthService {
     public User getUserByEmail(String email) {
         return userRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public boolean sendTestEmail(String email) {
+        return emailService.sendEmail(email, "EatEasy Test Email",
+                "This is a test email to verify your configuration.");
     }
 }

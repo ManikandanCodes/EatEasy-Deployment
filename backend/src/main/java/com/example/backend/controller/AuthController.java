@@ -105,4 +105,20 @@ public class AuthController {
             return ResponseEntity.status(400).body(java.util.Collections.singletonMap("error", e.getMessage()));
         }
     }
+
+    @PostMapping("/test-email")
+    public ResponseEntity<?> testEmail(@RequestBody java.util.Map<String, String> body) {
+        String email = body.get("email");
+        if (email == null || email.isEmpty()) {
+            return ResponseEntity.badRequest().body("Email is required");
+        }
+
+        boolean sent = authService.sendTestEmail(email);
+        if (sent) {
+            return ResponseEntity.ok(java.util.Collections.singletonMap("message", "Test email sent successfully"));
+        } else {
+            return ResponseEntity.status(500)
+                    .body(java.util.Collections.singletonMap("error", "Failed to send email. Check server logs."));
+        }
+    }
 }
