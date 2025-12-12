@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
 
-  private apiUrl = 'http://localhost:8080/api/admin';
+  private apiUrl = `${environment.apiUrl}/admin`;
 
   constructor(private http: HttpClient) { }
 
@@ -30,7 +31,7 @@ export class AdminService {
   activateRestaurant(id: number) {
     return this.http.put(`${this.apiUrl}/restaurants/${id}/activate`, {});
   }
-  
+
   getUsers() {
     return this.http.get(`${this.apiUrl}/users`);
   }
@@ -42,11 +43,11 @@ export class AdminService {
   activateUser(id: number) {
     return this.http.put(`${this.apiUrl}/users/${id}/activate`, {});
   }
-  
+
   getAnalytics() {
     return this.http.get(`${this.apiUrl}/analytics`);
   }
- 
+
 
   getCoupons() {
     return this.http.get(`${this.apiUrl}/coupons`);
