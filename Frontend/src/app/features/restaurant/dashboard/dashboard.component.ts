@@ -68,12 +68,16 @@ export class DashboardComponent implements OnInit {
 
       this.orderService.getRestaurantOrders().subscribe({
         next: (orders: any[]) => {
-          // Use TOTAL orders instead of just today's to match Analytics
-          this.stats.todayOrders = orders.length;
+          const today = new Date().toDateString();
+          const todayOrders = orders.filter(order => {
+            if (!order.orderTime) return false;
+            const orderDate = new Date(order.orderTime).toDateString();
+            return orderDate === today;
+          });
 
-          // Calculate TOTAL revenue (exclude REJECTED and CANCELLED)
-          this.stats.totalRevenue = orders
-            .filter(order => order.status !== 'REJECTED' && order.status !== 'CANCELLED')
+          this.stats.todayOrders = todayOrders.length;
+
+          this.stats.totalRevenue = todayOrders
             .reduce((sum, order) => sum + (order.totalPrice || 0), 0);
 
           if (this.restaurant?.rating) {
@@ -83,10 +87,6 @@ export class DashboardComponent implements OnInit {
         error: (err) => console.error('Error loading order stats:', err)
       });
     }
-  }
-
-  refreshDashboard(): void {
-    this.loadRestaurantData();
   }
 
   toggleStatus(): void {
