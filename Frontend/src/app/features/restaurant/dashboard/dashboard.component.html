@@ -26,7 +26,12 @@
 
 
   <section class="stats-section">
-    <h3>Today's Overview</h3>
+    <div class="stats-header"
+      style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <h3>Today's Overview</h3>
+      <button (click)="refreshDashboard()" class="btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">🔄 Refresh
+        Stats</button>
+    </div>
     <div class="stats-grid">
       <div class="stat-card orders">
         <h4>Today's Orders</h4>

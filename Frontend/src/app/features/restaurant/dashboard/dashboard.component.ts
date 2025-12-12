@@ -58,7 +58,6 @@ export class DashboardComponent implements OnInit {
   }
 
   loadStatistics(): void {
-    
     if (this.restaurant?.id) {
       this.menuService.getCategories(this.restaurant.id).subscribe({
         next: (categories: any[]) => {
@@ -67,20 +66,24 @@ export class DashboardComponent implements OnInit {
         error: (err) => console.error('Error loading menu stats:', err)
       });
 
-    
       this.orderService.getRestaurantOrders().subscribe({
         next: (orders: any[]) => {
-          const today = new Date().toDateString();
+          const now = new Date();
           const todayOrders = orders.filter(order => {
-       
-            const orderDate = new Date(order.orderTime).toDateString();
-            return orderDate === today;
+            if (!order.orderTime) return false;
+            const orderDate = new Date(order.orderTime);
+            return orderDate.getDate() === now.getDate() &&
+              orderDate.getMonth() === now.getMonth() &&
+              orderDate.getFullYear() === now.getFullYear();
           });
 
           this.stats.todayOrders = todayOrders.length;
-          this.stats.totalRevenue = todayOrders.reduce((sum, order) => sum + (order.totalPrice || 0), 0);
 
-         
+          // Calculate revenue only for valid orders (exclude REJECTED and CANCELLED)
+          this.stats.totalRevenue = todayOrders
+            .filter(order => order.status !== 'REJECTED' && order.status !== 'CANCELLED')
+            .reduce((sum, order) => sum + (order.totalPrice || 0), 0);
+
           if (this.restaurant?.rating) {
             this.stats.avgRating = this.restaurant.rating;
           }
@@ -88,6 +91,10 @@ export class DashboardComponent implements OnInit {
         error: (err) => console.error('Error loading order stats:', err)
       });
     }
+  }
+
+  refreshDashboard(): void {
+    this.loadRestaurantData();
   }
 
   toggleStatus(): void {
