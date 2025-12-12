@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { CustomerService } from '../../../core/services/customer.service';
 import { OrderService } from '../../../core/services/order.service';
 import { Router } from '@angular/router';
@@ -9,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-order-history',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './order-history.component.html',
   styleUrls: ['./order-history.component.css']
 })
@@ -40,6 +41,11 @@ export class OrderHistoryComponent implements OnInit {
     this.customerService.getOrderHistory().subscribe({
       next: (res: any) => {
         this.orders = Array.isArray(res) ? res : [];
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error loading orders:', err);
         this.loading = false;
         this.cdr.detectChanges();
       }

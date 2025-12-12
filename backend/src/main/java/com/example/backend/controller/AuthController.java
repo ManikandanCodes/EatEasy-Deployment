@@ -88,7 +88,7 @@ public class AuthController {
         String email = body.get("email");
         String otp = body.get("otp");
         try {
-            boolean verified = authService.verifyOtp(email, otp);
+            authService.verifyOtp(email, otp);
             return ResponseEntity.ok(java.util.Collections.singletonMap("message", "OTP verified successfully"));
         } catch (RuntimeException e) {
             return ResponseEntity.status(400).body(java.util.Collections.singletonMap("error", e.getMessage()));
