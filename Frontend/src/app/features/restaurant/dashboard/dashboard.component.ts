@@ -68,19 +68,11 @@ export class DashboardComponent implements OnInit {
 
       this.orderService.getRestaurantOrders().subscribe({
         next: (orders: any[]) => {
-          const now = new Date();
-          const todayOrders = orders.filter(order => {
-            if (!order.orderTime) return false;
-            const orderDate = new Date(order.orderTime);
-            return orderDate.getDate() === now.getDate() &&
-              orderDate.getMonth() === now.getMonth() &&
-              orderDate.getFullYear() === now.getFullYear();
-          });
+          // Use TOTAL orders instead of just today's to match Analytics
+          this.stats.todayOrders = orders.length;
 
-          this.stats.todayOrders = todayOrders.length;
-
-          // Calculate revenue only for valid orders (exclude REJECTED and CANCELLED)
-          this.stats.totalRevenue = todayOrders
+          // Calculate TOTAL revenue (exclude REJECTED and CANCELLED)
+          this.stats.totalRevenue = orders
             .filter(order => order.status !== 'REJECTED' && order.status !== 'CANCELLED')
             .reduce((sum, order) => sum + (order.totalPrice || 0), 0);
 
