@@ -29,7 +29,6 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items;
 
-    
     public Long getId() {
         return id;
     }
@@ -100,5 +99,25 @@ public class Order {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    // Rating and Review
+    private Integer rating;
+    private String reviewComment;
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public String getReviewComment() {
+        return reviewComment;
+    }
+
+    public void setReviewComment(String reviewComment) {
+        this.reviewComment = reviewComment;
     }
 }

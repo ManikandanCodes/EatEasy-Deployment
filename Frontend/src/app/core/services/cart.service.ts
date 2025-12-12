@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,21 +11,28 @@ export class CartService {
   private cartSubject = new BehaviorSubject<any>(this.cart);
   cart$ = this.cartSubject.asObservable();
 
-  constructor() {
-    this.loadCart();
+  constructor(private authService: AuthService) {
+    this.authService.loginStatus().subscribe(() => {
+      this.loadCart();
+    });
+  }
+
+  private getCartKey(): string {
+    const user = this.authService.getUser();
+    return user ? `cart_${user.id}` : 'cart_guest';
   }
 
   private saveCart() {
-    localStorage.setItem('cart', JSON.stringify(this.cart));
+    localStorage.setItem(this.getCartKey(), JSON.stringify(this.cart));
     this.cartSubject.next(this.cart);
   }
 
   private loadCart() {
-    const savedCart = localStorage.getItem('cart');
+    const savedCart = localStorage.getItem(this.getCartKey());
     if (savedCart) {
       try {
         const parsedCart = JSON.parse(savedCart);
- 
+
         this.cart = {};
         Object.keys(parsedCart).forEach(key => {
           const item = parsedCart[key];
@@ -32,15 +40,19 @@ export class CartService {
             this.cart[item.id] = item;
           }
         });
-        this.saveCart(); 
+
         this.cartSubject.next(this.cart);
       } catch (e) {
         console.error('Error parsing cart from local storage', e);
         this.cart = {};
         this.cartSubject.next(this.cart);
       }
+    } else {
+      this.cart = {};
+      this.cartSubject.next(this.cart);
     }
   }
+
 
   addItem(item: any) {
     if (!item.id) {
@@ -79,7 +91,7 @@ export class CartService {
     }
     return q;
   }
-  
+
   getCartItems() {
     return Object.values(this.cart);
   }
@@ -89,7 +101,7 @@ export class CartService {
     this.saveCart();
   }
 
-  
+
   clearCart() {
     this.cart = {};
     this.saveCart();

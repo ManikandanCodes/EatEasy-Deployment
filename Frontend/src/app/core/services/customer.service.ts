@@ -33,7 +33,7 @@ export class CustomerService {
     const user = this.authService.getUser();
     if (!user || !user.id) {
 
-      return this.apiService.get('orders/customer/0'); 
+      return this.apiService.get('orders/customer/0');
     }
     return this.apiService.get(`orders/customer/${user.id}`);
   }
@@ -48,8 +48,8 @@ export class CustomerService {
     return this.apiService.post('orders', order);
   }
 
-  validateCoupon(code: string) {
-    return this.apiService.post('orders/validate-coupon', { code });
+  validateCoupon(code: string, amount: number) {
+    return this.apiService.post('orders/validate-coupon', { code, amount });
   }
 
   getActiveCoupons() {

@@ -3,14 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private baseUrl = `${environment.apiUrl}/auth`;
+  private baseUrl = 'http://localhost:8080/api/auth';
 
   private loggedIn$ = new BehaviorSubject<boolean>(this.hasToken());
 
@@ -87,4 +86,19 @@ export class AuthService {
     return this.http.get(`${this.baseUrl}/me`);
   }
 
+  verifyOtp(email: string, otp: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/verify-otp`, { email, otp });
+  }
+
+  resendOtp(email: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/resend-otp`, { email });
+  }
+
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/forgot-password`, { email });
+  }
+
+  resetPassword(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/reset-password`, data);
+  }
 }

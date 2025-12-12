@@ -326,3 +326,29 @@ h2 {
   background: #1b5e20;
   transform: translateY(-2px);
 }
+
+.user-rating {
+  margin-top: 10px;
+  background: #fdfdfd;
+  padding: 8px;
+  border-left: 3px solid #ffca28;
+  border-radius: 4px;
+}
+
+.rating-display {
+  font-weight: bold;
+  color: #444;
+  margin: 0;
+}
+
+.stars {
+  color: #ffca28;
+  margin-left: 5px;
+}
+
+.user-comment {
+  margin: 5px 0 0;
+  font-style: italic;
+  color: #666;
+  font-size: 0.9em;
+}

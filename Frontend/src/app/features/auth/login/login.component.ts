@@ -15,11 +15,19 @@ export class LoginComponent {
 
   email = '';
   password = '';
+  confirmPassword = '';
   errorMsg = '';
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(private auth: AuthService, private router: Router) { }
 
   Onlogin() {
+    if (this.password !== this.confirmPassword) {
+      this.errorMsg = 'Passwords do not match!';
+      return;
+    }
+
     const data = {
       email: this.email,
       password: this.password
@@ -29,14 +37,14 @@ export class LoginComponent {
       next: (res: any) => {
         this.errorMsg = '';
         const role = res.role?.trim();
-  
+
         if (role === 'ROLE_RESTAURANT_OWNER' || role === 'RESTAURANT_OWNER' || role === 'OWNER') {
           const isRegistered = res.isRestaurantRegistered || res.restaurantRegistered;
           if (isRegistered) {
-        
+
             this.router.navigate(['/owner/dashboard']);
           } else {
-           
+
             this.router.navigate(['/owner/add-restaurant']);
           }
         } else if (role === 'CUSTOMER') {

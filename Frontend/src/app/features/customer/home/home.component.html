@@ -63,6 +63,7 @@
         <div class="offer-content">
           <span class="offer-tag">{{ coupon.type }}</span>
           <h4>{{ coupon.type === 'PERCENTAGE' ? coupon.discount + '% OFF' : '₹' + coupon.discount + ' OFF' }}</h4>
+          <p class="min-purchase" *ngIf="coupon.minPurchaseAmount > 0">Min Order: ₹{{ coupon.minPurchaseAmount }}</p>
           <p>Use code <strong>{{ coupon.code }}</strong></p>
 
           <button class="btn btn-white btn-sm" (click)="copyCode(coupon.code)">Copy Code</button>

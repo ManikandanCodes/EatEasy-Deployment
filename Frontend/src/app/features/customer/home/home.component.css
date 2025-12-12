@@ -218,6 +218,18 @@
   color: #2D3436;
 }
 
+.min-purchase {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  opacity: 0.9;
+}
+
+.offer-content p {
+  margin: 0 0 1rem 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
 .offer-image {
   font-size: 5rem;
   opacity: 0.2;

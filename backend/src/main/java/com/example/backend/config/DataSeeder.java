@@ -7,6 +7,8 @@ import com.example.backend.model.MenuItem;
 import com.example.backend.repository.MenuCategoryRepository;
 import com.example.backend.repository.MenuItemRepository;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.repository.CouponRepository;
+import com.example.backend.model.Coupon;
 import com.example.backend.repository.RestaurantRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,19 +24,22 @@ public class DataSeeder implements CommandLineRunner {
         private final MenuCategoryRepository menuCategoryRepository;
         private final MenuItemRepository menuItemRepository;
         private final JdbcTemplate jdbcTemplate;
+        private final CouponRepository couponRepository;
 
         public DataSeeder(UserRepository userRepository,
                         PasswordEncoder passwordEncoder,
                         RestaurantRepository restaurantRepository,
                         MenuCategoryRepository menuCategoryRepository,
                         MenuItemRepository menuItemRepository,
-                        JdbcTemplate jdbcTemplate) {
+                        JdbcTemplate jdbcTemplate,
+                        CouponRepository couponRepository) {
                 this.userRepository = userRepository;
                 this.passwordEncoder = passwordEncoder;
                 this.restaurantRepository = restaurantRepository;
                 this.menuCategoryRepository = menuCategoryRepository;
                 this.menuItemRepository = menuItemRepository;
                 this.jdbcTemplate = jdbcTemplate;
+                this.couponRepository = couponRepository;
         }
 
         @Override
@@ -206,6 +211,49 @@ public class DataSeeder implements CommandLineRunner {
                                 "Adyar Ananda Bhavan", "Pure vegetarian sweets and savories.",
                                 "5, LB Road, Adyar, Chennai, Tamil Nadu", "Sweets, South Indian, Vegetarian",
                                 "https://images.unsplash.com/photo-1554118811-1e0d58224f24");
+
+                seedCoupons();
+        }
+
+        private void seedCoupons() {
+                if (couponRepository.count() == 0) {
+                        System.out.println("Seeding coupons...");
+
+                        Coupon c1 = new Coupon();
+                        c1.setCode("WELCOME50");
+                        c1.setDiscount(50);
+                        c1.setType(Coupon.DiscountType.PERCENTAGE);
+                        c1.setExpiryDate(java.time.LocalDate.now().plusMonths(1));
+                        c1.setMinPurchaseAmount(500);
+                        couponRepository.save(c1);
+
+                        Coupon c2 = new Coupon();
+                        c2.setCode("SUPER20");
+                        c2.setDiscount(20);
+                        c2.setType(Coupon.DiscountType.PERCENTAGE);
+                        c2.setExpiryDate(java.time.LocalDate.now().plusMonths(1));
+                        c2.setMinPurchaseAmount(0); // No limit for this one
+                        couponRepository.save(c2);
+
+                        Coupon c3 = new Coupon();
+                        c3.setCode("SAVE100");
+                        c3.setDiscount(100);
+                        c3.setType(Coupon.DiscountType.FLAT);
+                        c3.setExpiryDate(java.time.LocalDate.now().plusMonths(1));
+                        c3.setMinPurchaseAmount(1000);
+                        couponRepository.save(c3);
+
+                        System.out.println("Coupons seeded");
+                } else {
+                        // Check if WELCOME50 needs update
+                        couponRepository.findByCode("WELCOME50").ifPresent(c -> {
+                                if (c.getMinPurchaseAmount() == 0) {
+                                        c.setMinPurchaseAmount(500);
+                                        couponRepository.save(c);
+                                        System.out.println("Updated WELCOME50 min purchase amount");
+                                }
+                        });
+                }
         }
 
         private void createOwnerAndRestaurant(String name, String email, String password, String restaurantName,

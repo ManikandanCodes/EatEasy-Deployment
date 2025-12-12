@@ -16,6 +16,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   menuOpen = false;
   isLoggedIn = false;
+  userRole: string | null = null;
   cartCount = 0;
   private authSub: Subscription | undefined;
   private cartSub: Subscription | undefined;
@@ -30,6 +31,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.authSub = this.auth.loginStatus().subscribe(status => {
       console.log('Navbar: loginStatus received:', status);
       this.isLoggedIn = status;
+      if (status) {
+        const user = this.auth.getUser();
+        this.userRole = user?.role || null;
+      } else {
+        this.userRole = null;
+      }
       this.cdr.detectChanges();
     });
 
@@ -48,11 +55,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     const width = event.target.innerWidth;
-    
+
     if (width > 768 && this.menuOpen) {
       this.menuOpen = false;
     }

@@ -25,7 +25,7 @@ export class OrderService {
     return this.api.post<OrdersComponent>('orders', data);
   }
 
-  
+
 
   getRestaurantOrders(): Observable<OrdersComponent[]> {
     return this.api.get<OrdersComponent[]>('orders/restaurant');
@@ -37,6 +37,10 @@ export class OrderService {
 
   submitReview(reviewData: any): Observable<any> {
     return this.api.post('reviews', reviewData);
+  }
+
+  rateOrder(orderId: number, rating: number, comment: string): Observable<any> {
+    return this.api.post(`orders/${orderId}/rate`, { rating, comment });
   }
 
   validateCoupon(code: string): Observable<any> {

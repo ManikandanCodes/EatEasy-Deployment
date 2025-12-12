@@ -27,6 +27,12 @@
         </li>
       </ul>
 
+      <div class="review-section" *ngIf="order.rating">
+        <h4>Customer Review:</h4>
+        <p class="rating"><strong>Rating:</strong> {{ '★'.repeat(order.rating) }}</p>
+        <p class="comment" *ngIf="order.reviewComment">"{{ order.reviewComment }}"</p>
+      </div>
+
       <div class="actions">
         <button *ngIf="order.status === 'PLACED'" (click)="updateStatus(order.id, 'ACCEPTED')">✓ Accept</button>
 

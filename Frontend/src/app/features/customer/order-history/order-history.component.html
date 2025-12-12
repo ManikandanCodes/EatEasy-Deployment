@@ -26,11 +26,16 @@
         </span>
       </div>
 
+      <div class="user-rating" *ngIf="o.rating">
+        <p class="rating-display">Your Rating: <span class="stars">{{ '★'.repeat(o.rating) }}</span></p>
+        <p class="user-comment" *ngIf="o.reviewComment">"{{ o.reviewComment }}"</p>
+      </div>
+
       <div class="actions">
         <button class="track-btn"
           *ngIf="['PLACED', 'ACCEPTED', 'PREPARING', 'READY', 'OUT_FOR_DELIVERY'].includes(o.status)"
           (click)="trackOrder(o.id)">
-           Track Order
+          Track Order
         </button>
         <button class="rate-btn" *ngIf="o.status === 'DELIVERED'" (click)="rateOrder(o)">
           ⭐ Rate Order
@@ -56,8 +61,13 @@
       <span class="star" [class.filled]="5 <= rating" (click)="setRating(5)">★</span>
     </div>
 
-    <textarea #commentBox placeholder="Write a comment (optional)..." rows="4" class="comment-input" [value]="comment"
-      (input)="comment = commentBox.value"></textarea>
+    <textarea #commentBox placeholder="Write a comment..." rows="4" class="comment-input" [value]="comment"
+      [attr.maxlength]="maxChars" (input)="onCommentInput(commentBox.value)">
+    </textarea>
+
+    <p style="text-align: right; font-size: 0.8em; color: #666; margin-top: -20px; margin-bottom: 20px;">
+      {{ maxChars - comment.length }} characters remaining
+    </p>
 
     <div class="modal-buttons">
       <button class="btn-cancel" (click)="closeRatingModal()">Cancel</button>

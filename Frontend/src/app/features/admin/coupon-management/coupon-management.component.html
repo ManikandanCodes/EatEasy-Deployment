@@ -4,7 +4,7 @@
     <p class="page-subtitle">Create and manage discount coupons for your customers</p>
   </div>
 
-  
+
   <div class="form-card">
     <h3>Add New Coupon</h3>
 
@@ -17,6 +17,11 @@
       <div class="form-group">
         <label>Discount Value</label>
         <input type="number" [(ngModel)]="discount" placeholder="e.g., 20">
+      </div>
+
+      <div class="form-group">
+        <label>Min Purchase (₹)</label>
+        <input type="number" [(ngModel)]="minPurchaseAmount" placeholder="e.g., 500">
       </div>
     </div>
 
@@ -75,6 +80,7 @@
           <tr>
             <th>Coupon Code</th>
             <th>Discount</th>
+            <th>Min Purchase</th>
             <th>Type</th>
             <th>Expiry Date</th>
             <th>Actions</th>
@@ -88,6 +94,9 @@
             </td>
             <td>
               <span class="discount-value">{{ c.discount }}{{ c.type === 'PERCENTAGE' ? '%' : '₹' }}</span>
+            </td>
+            <td>
+              <span class="discount-value">₹{{ c.minPurchaseAmount || 0 }}</span>
             </td>
             <td>
               <span class="type-badge" [ngClass]="c.type.toLowerCase()">
@@ -107,7 +116,7 @@
       </table>
     </div>
 
-    
+
     <div class="coupon-cards">
       <div class="coupon-card" *ngFor="let c of coupons">
         <div class="coupon-card-header">

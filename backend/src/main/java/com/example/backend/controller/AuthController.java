@@ -20,7 +20,6 @@ public class AuthController {
         this.authService = authService;
     }
 
-
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
 
@@ -31,7 +30,6 @@ public class AuthController {
         user.setPassword(req.getPassword());
         user.setRole(User.Role.valueOf(req.getRole()));
 
-        
         if (req.getRole().equalsIgnoreCase("ROLE_RESTAURANT_OWNER")
                 || req.getRole().equalsIgnoreCase("RESTAURANT_OWNER")) {
             user.setRestaurantRegistered(false);
@@ -40,7 +38,6 @@ public class AuthController {
         return ResponseEntity.ok(authService.register(user));
     }
 
-    
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req) {
         try {
@@ -51,6 +48,29 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody java.util.Map<String, String> body) {
+        String email = body.get("email");
+        try {
+            authService.forgotPassword(email);
+            return ResponseEntity.ok(java.util.Collections.singletonMap("message", "OTP sent to your email"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(java.util.Collections.singletonMap("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody java.util.Map<String, String> body) {
+        String email = body.get("email");
+        String otp = body.get("otp");
+        String newPassword = body.get("newPassword");
+        try {
+            authService.resetPassword(email, otp, newPassword);
+            return ResponseEntity.ok(java.util.Collections.singletonMap("message", "Password reset successfully"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(java.util.Collections.singletonMap("error", e.getMessage()));
+        }
+    }
 
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(org.springframework.security.core.Authentication authentication) {
@@ -58,11 +78,31 @@ public class AuthController {
             return ResponseEntity.status(401).body("Not authenticated");
         }
 
-    
         String email = authentication.getName();
 
-
-
         return ResponseEntity.ok(authService.getUserByEmail(email));
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<?> verifyOtp(@RequestBody java.util.Map<String, String> body) {
+        String email = body.get("email");
+        String otp = body.get("otp");
+        try {
+            boolean verified = authService.verifyOtp(email, otp);
+            return ResponseEntity.ok(java.util.Collections.singletonMap("message", "OTP verified successfully"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(java.util.Collections.singletonMap("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/resend-otp")
+    public ResponseEntity<?> resendOtp(@RequestBody java.util.Map<String, String> body) {
+        String email = body.get("email");
+        try {
+            authService.resendOtp(email);
+            return ResponseEntity.ok(java.util.Collections.singletonMap("message", "OTP resent successfully"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(java.util.Collections.singletonMap("error", e.getMessage()));
+        }
     }
 }

@@ -15,11 +15,12 @@ export class CouponManagementComponent implements OnInit {
   coupons: any[] = [];
   loading = true;
 
-  
+
   code = '';
   discount = 0;
   type = 'PERCENTAGE';
   expiry = '';
+  minPurchaseAmount = 0;
 
   constructor(private adminService: AdminService) { }
 
@@ -47,7 +48,8 @@ export class CouponManagementComponent implements OnInit {
       code: this.code,
       discount: this.discount,
       type: this.type,
-      expiryDate: this.expiry
+      expiryDate: this.expiry,
+      minPurchaseAmount: this.minPurchaseAmount
     };
 
     this.adminService.addCoupon(newCoupon).subscribe({
@@ -58,6 +60,7 @@ export class CouponManagementComponent implements OnInit {
         this.discount = 0;
         this.type = 'PERCENTAGE';
         this.expiry = '';
+        this.minPurchaseAmount = 0;
       },
       error: (err) => {
         console.error('Error adding coupon:', err);

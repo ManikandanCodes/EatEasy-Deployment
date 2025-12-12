@@ -94,13 +94,11 @@ public class OrderController {
                     .orElseThrow(() -> new RuntimeException("User not found"));
         }
 
-        
         List<Restaurant> restaurants = restaurantRepository.findByOwnerId(owner.getId());
 
         if (restaurants.isEmpty()) {
             return List.of();
         }
-
 
         Restaurant restaurant = restaurants.get(0);
 
@@ -123,11 +121,14 @@ public class OrderController {
     }
 
     @PostMapping("/validate-coupon")
-    public Coupon validateCoupon(@RequestBody java.util.Map<String, String> body) {
-        String code = body.get("code");
+    public Coupon validateCoupon(@RequestBody java.util.Map<String, Object> body) {
+        String code = (String) body.get("code");
+        Double amount = Double.valueOf(body.get("amount").toString());
+
         return couponRepository.findByCode(code)
                 .filter(c -> c.getExpiryDate().isAfter(java.time.LocalDate.now()))
-                .orElseThrow(() -> new RuntimeException("Invalid or expired coupon"));
+                .filter(c -> amount >= c.getMinPurchaseAmount())
+                .orElseThrow(() -> new RuntimeException("Invalid coupon, expired, or minimum purchase amount not met"));
     }
 
     @GetMapping("/coupons")
@@ -135,6 +136,13 @@ public class OrderController {
         return couponRepository.findAll().stream()
                 .filter(c -> c.getExpiryDate().isAfter(java.time.LocalDate.now()))
                 .collect(java.util.stream.Collectors.toList());
+    }
+
+    @PostMapping("/{id}/rate")
+    public Order rateOrder(@PathVariable Long id, @RequestBody java.util.Map<String, Object> body) {
+        Integer rating = (Integer) body.get("rating");
+        String comment = (String) body.get("comment");
+        return orderService.rateOrder(id, rating, comment);
     }
 
     @DeleteMapping("/all")

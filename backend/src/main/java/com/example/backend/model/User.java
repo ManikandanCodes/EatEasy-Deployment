@@ -36,6 +36,12 @@ public class User {
 
     private boolean restaurantRegistered = false;
 
+    @Column(name = "otp")
+    private String otp;
+
+    @Column(name = "otp_expiry_time")
+    private java.time.LocalDateTime otpExpiryTime;
+
     public enum Role {
         CUSTOMER,
         RESTAURANT_OWNER,
@@ -105,5 +111,21 @@ public class User {
 
     public void setRestaurantRegistered(boolean restaurantRegistered) {
         this.restaurantRegistered = restaurantRegistered;
+    }
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
+    public java.time.LocalDateTime getOtpExpiryTime() {
+        return otpExpiryTime;
+    }
+
+    public void setOtpExpiryTime(java.time.LocalDateTime otpExpiryTime) {
+        this.otpExpiryTime = otpExpiryTime;
     }
 }

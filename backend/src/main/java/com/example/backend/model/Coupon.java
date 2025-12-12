@@ -71,6 +71,16 @@ public class Coupon {
         return expiryDate;
     }
 
+    private double minPurchaseAmount;
+
+    public double getMinPurchaseAmount() {
+        return minPurchaseAmount;
+    }
+
+    public void setMinPurchaseAmount(double minPurchaseAmount) {
+        this.minPurchaseAmount = minPurchaseAmount;
+    }
+
     public void setExpiryDate(LocalDate expiryDate) {
         this.expiryDate = expiryDate;
     }

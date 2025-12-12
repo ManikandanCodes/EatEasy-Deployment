@@ -2,14 +2,14 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CustomerService } from '../../../core/services/customer.service';
 import { OrderService } from '../../../core/services/order.service';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-order-history',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './order-history.component.html',
   styleUrls: ['./order-history.component.css']
 })
@@ -23,6 +23,7 @@ export class OrderHistoryComponent implements OnInit {
   selectedOrder: any = null;
   rating = 0;
   comment = '';
+  maxChars = 100;
 
   constructor(
     private customerService: CustomerService,
@@ -58,7 +59,6 @@ export class OrderHistoryComponent implements OnInit {
     this.router.navigate(['/customer/track', orderId]);
   }
 
-
   rateOrder(order: any) {
     this.selectedOrder = order;
     this.rating = 0;
@@ -66,17 +66,14 @@ export class OrderHistoryComponent implements OnInit {
     this.showRatingModal = true;
   }
 
-
   setRating(star: number) {
     this.rating = star;
   }
-
 
   closeRatingModal() {
     this.showRatingModal = false;
     this.selectedOrder = null;
   }
-
 
   submitRating() {
     if (this.rating === 0) {
@@ -84,22 +81,28 @@ export class OrderHistoryComponent implements OnInit {
       return;
     }
 
-    const reviewData = {
-      orderId: this.selectedOrder.id,
-      rating: this.rating,
-      comment: this.comment
-    };
-
-    this.orderService.submitReview(reviewData).subscribe({
-      next: () => {
-        alert("Thank you for your review!");
+    this.orderService.rateOrder(this.selectedOrder.id, this.rating, this.comment).subscribe({
+      next: (updatedOrder) => {
+        alert("Thank you for your rating!");
+        if (this.selectedOrder) {
+          this.selectedOrder.rating = updatedOrder.rating;
+          this.selectedOrder.reviewComment = updatedOrder.reviewComment;
+          const index = this.orders.findIndex(o => o.id === this.selectedOrder.id);
+          if (index !== -1) {
+            this.orders[index] = updatedOrder;
+          }
+        }
         this.closeRatingModal();
+        this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error("Error submitting review:", err);
-        alert("Failed to submit review. You may have already reviewed this order.");
-        this.closeRatingModal();
+        console.error("Error submitting rating:", err);
+        alert("Failed to submit rating.");
       }
     });
+  }
+
+  onCommentInput(value: string) {
+    this.comment = value;
   }
 }

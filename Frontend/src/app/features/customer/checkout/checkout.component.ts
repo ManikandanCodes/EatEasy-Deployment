@@ -60,7 +60,7 @@ export class CheckoutComponent {
       return;
     }
 
-    this.customerService.validateCoupon(this.couponCode).subscribe({
+    this.customerService.validateCoupon(this.couponCode, this.subtotal).subscribe({
       next: (coupon: any) => {
         this.appliedCoupon = coupon;
 
@@ -70,7 +70,7 @@ export class CheckoutComponent {
           this.discountAmount = coupon.discount;
         }
 
-      
+
         if (this.discountAmount > this.subtotal) {
           this.discountAmount = this.subtotal;
         }

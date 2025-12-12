@@ -72,4 +72,11 @@ public class OrderService {
     public void deleteAllOrders() {
         orderRepo.deleteAll();
     }
+
+    public Order rateOrder(Long orderId, Integer rating, String reviewComment) {
+        Order order = getOrderById(orderId);
+        order.setRating(rating);
+        order.setReviewComment(reviewComment);
+        return orderRepo.save(order);
+    }
 }

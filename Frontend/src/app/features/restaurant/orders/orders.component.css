@@ -201,4 +201,33 @@ ul li {
   .actions button {
     width: 100%;
   }
+
+  .actions button {
+    width: 100%;
+  }
+}
+
+.review-section {
+  margin: 15px 0;
+  padding: 10px;
+  background: #fff8e1;
+  border: 1px solid #ffe082;
+  border-radius: 8px;
+}
+
+.review-section h4 {
+  margin-top: 0;
+  color: #f57f17;
+}
+
+.review-section .rating {
+  font-size: 1.1em;
+  color: #ffca28;
+  margin-bottom: 5px;
+}
+
+.review-section .comment {
+  font-style: italic;
+  color: #555;
+  margin: 5px 0 0;
 }

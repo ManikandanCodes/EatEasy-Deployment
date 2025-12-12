@@ -6,11 +6,25 @@
 
   <div class="desktop-menu">
 
+    <!-- COMMON LINKS (Home, Cart, Orders) -->
     <a routerLink="/customer/home" routerLinkActive="active">Home</a>
-
 
     <a *ngIf="isLoggedIn" routerLink="/customer/cart" routerLinkActive="active">
       Cart <span *ngIf="cartCount > 0" class="badge">{{ cartCount }}</span>
+    </a>
+
+    <a *ngIf="isLoggedIn" routerLink="/customer/orders" routerLinkActive="active">
+      My Orders
+    </a>
+
+    <!-- ADMIN LINKS -->
+    <a *ngIf="userRole === 'ADMIN'" routerLink="/admin/dashboard" routerLinkActive="active">
+      Dashboard
+    </a>
+
+    <!-- RESTAURANT OWNER LINKS -->
+    <a *ngIf="userRole === 'RESTAURANT_OWNER'" routerLink="/owner/dashboard" routerLinkActive="active">
+      Dashboard
     </a>
 
 
@@ -20,11 +34,6 @@
 
     <a *ngIf="!isLoggedIn" routerLink="/register" routerLinkActive="active">
       Register
-    </a>
-
-
-    <a *ngIf="isLoggedIn" routerLink="/customer/orders" routerLinkActive="active">
-      My Orders
     </a>
 
     <a *ngIf="isLoggedIn" (click)="logout()" class="logout-btn">
@@ -43,16 +52,22 @@
 
   <div class="mobile-menu" [class.open]="menuOpen">
 
+    <!-- COMMON LINKS -->
     <a routerLink="/customer/home" (click)="toggleMenu()">Home</a>
-
     <a *ngIf="isLoggedIn" routerLink="/customer/cart" (click)="toggleMenu()">
       Cart <span *ngIf="cartCount > 0" class="badge">{{ cartCount }}</span>
     </a>
+    <a *ngIf="isLoggedIn" routerLink="/customer/orders" (click)="toggleMenu()">My Orders</a>
+
+    <!-- ADMIN LINKS -->
+    <a *ngIf="userRole === 'ADMIN'" routerLink="/admin/dashboard" (click)="toggleMenu()">Dashboard</a>
+
+    <!-- RESTAURANT OWNER LINKS -->
+    <a *ngIf="userRole === 'RESTAURANT_OWNER'" routerLink="/owner/dashboard" (click)="toggleMenu()">Dashboard</a>
 
     <a *ngIf="!isLoggedIn" routerLink="/login" (click)="toggleMenu()">Login</a>
     <a *ngIf="!isLoggedIn" routerLink="/register" (click)="toggleMenu()">Register</a>
 
-    <a *ngIf="isLoggedIn" routerLink="/customer/orders" (click)="toggleMenu()">My Orders</a>
     <a *ngIf="isLoggedIn" (click)="logout()">Logout</a>
 
   </div>
